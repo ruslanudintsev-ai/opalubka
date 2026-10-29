@@ -1,0 +1,28 @@
+name: P1a static safety
+
+on:
+  pull_request:
+    paths:
+      - index.html
+      - tests/p1a-static.test.mjs
+      - .github/workflows/p1a-static-safety.yml
+      - README.md
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  offline-tests:
+    name: Node offline demo contract
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Use Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate the static demo
+        run: node --test tests/p1a-static.test.mjs

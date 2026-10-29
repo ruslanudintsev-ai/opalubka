@@ -22,8 +22,8 @@ if (equipmentSelect && areaInput && periodInput && total && breakdown && error) 
       areaM2: areaInput.value,
       billingPeriods: periodInput.value,
     });
-    areaInput.setAttribute('aria-invalid', String(!result.ok && (!areaInput.value || !Number.isFinite(Number(areaInput.value)) || Number(areaInput.value) <= 0)));
-    periodInput.setAttribute('aria-invalid', String(!result.ok && (!periodInput.value || !Number.isInteger(Number(periodInput.value)) || Number(periodInput.value) < 1)));
+    areaInput.setAttribute('aria-invalid', String(!result.ok && result.errors.some(message => message.startsWith('Площадь:'))));
+    periodInput.setAttribute('aria-invalid', String(!result.ok && result.errors.some(message => message.startsWith('Срок:'))));
     if (!result.ok) {
       total.textContent = '—';
       breakdown.textContent = 'Расчёт не выполнен.';

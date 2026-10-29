@@ -1,0 +1,29 @@
+---
+import type { Equipment } from '../data/catalog.ts';
+interface Props { item: Equipment; index: number }
+const { item, index } = Astro.props;
+---
+<article class="equipment-card" data-equipment-category={item.category}>
+  <div class="equipment-visual" aria-hidden="true">
+    <div class="tech-grid"></div>
+    <svg viewBox="0 0 300 185" class="tech-drawing" fill="none" aria-hidden="true">
+      <path d="M75 140 L75 47 L164 25 L229 58 L229 150 L143 173 Z" stroke="currentColor" stroke-width="3" />
+      <path d="M75 47 L143 80 L229 58 M143 80 V173 M164 25 V119 M75 92 L143 124 L229 103 M108 63 V155 M196 42 V161" stroke="currentColor" stroke-width="2" opacity=".7"/>
+      <path d="M75 140 L143 173 L229 150" stroke="currentColor" stroke-width="2" opacity=".6"/>
+      <circle cx="143" cy="80" r="4" fill="currentColor" />
+    </svg>
+    <span class="visual-counter">0{index + 1} / 05</span>
+    <span class="visual-label">SCHEMATIC / DEMO</span>
+  </div>
+  <div class="equipment-body">
+    <div class="equipment-kicker"><span class="tiny-dot"></span> {item.badge} · условный пример</div>
+    <h3>{item.name}</h3>
+    <p>{item.subtitle}. Параметры не являются техническими характеристиками производителя.</p>
+    <div class="equipment-bottom">
+      <div class="equipment-rate"><strong>{item.dailyRateRubPerM2} ₽</strong><span>/ м² / сутки · демо</span></div>
+      <button class="select-button" type="button" data-select-equipment={item.id} aria-label={`Рассчитать демо: ${item.name}`}>
+        Выбрать <span aria-hidden="true">↗</span>
+      </button>
+    </div>
+  </div>
+</article>

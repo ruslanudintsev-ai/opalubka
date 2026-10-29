@@ -3,9 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ОпалубкаПро — Аренда строительной опалубки</title>
+<title>Опалубка • демо-каталог и калькулятор опалубки</title>
+<meta name="description" content="Учебный прототип каталога опалубки с локальным демонстрационным расчётом. Вымышленные данные, без заявок, продаж и сбора контактов.">
 <style>
-  @import url('https://cdn.jsdelivr.net/npm/fontsource-inter@5/index.css');
+  /* System font: no external font request or dependency. */
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -24,7 +25,7 @@
   html { scroll-behavior: smooth; }
 
   body {
-    font-family: 'Inter', sans-serif;
+    font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
     background: var(--dark);
     color: var(--light);
     overflow-x: hidden;
@@ -331,7 +332,7 @@
     border: 1px solid rgba(255,255,255,0.1);
     border-radius: 12px; padding: 0.9rem 1.2rem;
     color: var(--light); font-size: 1rem;
-    font-family: 'Inter', sans-serif;
+    font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
     transition: all 0.3s;
     appearance: none;
   }
@@ -442,7 +443,7 @@
     border: 1px solid rgba(255,255,255,0.1);
     border-radius: 12px; padding: 0.9rem 1.2rem;
     color: var(--light); font-size: 1rem;
-    font-family: 'Inter', sans-serif;
+    font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
     transition: all 0.3s;
   }
   .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
@@ -589,76 +590,114 @@
     0% { background-position: -200% 0; }
     100% { background-position: 200% 0; }
   }
+
+  /* P1a: original CSS-only technical illustrations; no remote media. */
+  :root { color-scheme: dark; }
+  body { line-height: 1.5; }
+  .skip-link { position: fixed; z-index: 11000; top: .5rem; left: .5rem; transform: translateY(-170%); padding: .7rem 1rem; background: var(--primary); color: var(--dark); border-radius: .5rem; }
+  .skip-link:focus { transform: translateY(0); }
+  :focus-visible { outline: 3px solid #FBBF24; outline-offset: 4px; }
+  .hero-blueprint { width: 100%; height: 100%; background:
+    linear-gradient(125deg, #0f172a 20%, rgba(15,23,42,.76) 65%, #0f172a 100%),
+    repeating-linear-gradient(90deg, transparent 0 58px, rgba(245,158,11,.2) 58px 59px),
+    repeating-linear-gradient(0deg, #24344c 0 58px, rgba(245,158,11,.2) 58px 59px); }
+  .hero-blueprint::after { content: ""; position: absolute; right: 9%; top: 24%; width: min(32vw, 330px); aspect-ratio: 1;
+    border: 12px double rgba(245,158,11,.23); transform: rotate(-13deg); box-shadow: 28px 28px 0 -4px rgba(245,158,11,.13), 65px 66px 0 -11px rgba(245,158,11,.11); }
+  .hero-stats { align-items: stretch; flex-wrap: wrap; }
+  .hero-stat { min-width: 120px; }
+  .demo-note { padding: 1rem 1.2rem; border: 1px solid rgba(245,158,11,.5); border-radius: 12px;
+    background: rgba(245,158,11,.1); color: #FDE68A; margin: 1rem 0 1.5rem; line-height: 1.6; }
+  .demo-note a { color: #FDE68A; text-decoration: underline; }
+  .product-img { background: linear-gradient(140deg, #263d56, #14243a); }
+  .product-illustration { width: 100%; height: 100%; display: grid; place-items: center; overflow: hidden;
+    background: repeating-linear-gradient(90deg, transparent 0 36px, rgba(245,158,11,.08) 36px 38px),
+      repeating-linear-gradient(0deg, transparent 0 36px, rgba(245,158,11,.07) 36px 38px); }
+  .product-illustration::before { content: ""; display: block; width: 42%; height: 58%;
+    border: 7px solid rgba(251,191,36,.7); background: repeating-linear-gradient(90deg, transparent 0 30%, rgba(251,191,36,.3) 30% 33%);
+    box-shadow: 22px 16px 0 -4px #36556f, 28px 24px 0 0 rgba(251,191,36,.33); transform: skewY(-6deg) rotate(-4deg); }
+  .product-illustration span { position: absolute; bottom: 1rem; right: 1rem; color: #FDE68A; font-size: .8rem; font-weight: 700; letter-spacing: .12em; }
+  .product-card[hidden] { display: none !important; }
+  .catalog-grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); }
+  .adv-grid, .calc-grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); }
+  .test-grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); }
+  .calc-result .total { font-size: clamp(1.65rem, 6vw, 3rem); overflow-wrap: anywhere; }
+  .calc-error { margin-top: 1rem; color: #FCA5A5; font-weight: 600; }
+  .calc-error:empty { display: none; }
+  .calc-group [aria-invalid="true"] { border-color: #FCA5A5; }
+  .cta-section::before { background: none; }
+  .feedback-card { max-width: 760px; padding: 2rem; border-radius: 20px; background: rgba(255,255,255,.04);
+    border: 1px solid rgba(255,255,255,.16); line-height: 1.8; }
+  .feedback-card a { color: #FDE68A; }
+  .footer-grid { grid-template-columns: 2fr 1fr 1fr; }
+  .footer a { color: #FDE68A; }
+  @media (max-width: 768px) {
+    .footer-grid { grid-template-columns: 1fr; }
+    .hero h1 { font-size: clamp(2rem, 10vw, 3.8rem); }
+    section { padding: 4rem 1rem; }
+    .hero { padding-top: 7rem; }
+    .hero-content { padding: 0 .2rem; }
+    .calc-wrapper { padding: 1.5rem 1rem; }
+    .catalog-header { align-items: stretch; }
+    .product-info { padding: 1.35rem; }
+    .product-price { gap: .7rem; flex-wrap: wrap; }
+    .navbar { padding: .85rem 1rem; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important;
+      animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+    .reveal { opacity: 1 !important; transform: none !important; }
+    .particle { display: none; }
+  }
 </style>
 </head>
 <body>
+<a class="skip-link" href="#main">К основному содержимому</a>
 
 <!-- NAVBAR -->
-<nav class="navbar" id="navbar">
-  <a href="#" class="nav-logo">
-    <svg viewBox="0 0 40 40" fill="none">
+<header>
+<nav class="navbar" id="navbar" aria-label="Основная навигация">
+  <a href="#hero" class="nav-logo" aria-label="Опалубка, главная секция">
+    <svg viewBox="0 0 40 40" fill="none" aria-hidden="true">
       <rect x="4" y="24" width="14" height="12" rx="2" fill="#F59E0B"/>
       <rect x="22" y="14" width="14" height="22" rx="2" fill="#F59E0B" opacity="0.7"/>
       <rect x="4" y="8" width="14" height="12" rx="2" fill="#F59E0B" opacity="0.5"/>
-      <rect x="22" y="4" width="14" height="6" rx="2" fill="#F59E0B" opacity="0.3"/>
     </svg>
-    Опалубка<span>Про</span>
+    Опалубка<span>DEMO</span>
   </a>
   <ul class="nav-links" id="navLinks">
-    <li><a href="#advantages">Преимущества</a></li>
+    <li><a href="#advantages">Возможности</a></li>
     <li><a href="#catalog">Каталог</a></li>
-    <li><a href="#how">Как работает</a></li>
+    <li><a href="#how">Сценарий</a></li>
     <li><a href="#calculator">Калькулятор</a></li>
-    <li><a href="#reviews">Отзывы</a></li>
-    <li><a href="#contact">Контакты</a></li>
+    <li><a href="#evidence">Ограничения</a></li>
+    <li><a href="#contact">О проекте</a></li>
   </ul>
-  <a href="#contact" class="nav-cta">Оставить заявку</a>
-  <button class="burger" id="burger" aria-label="Меню">
+  <a href="#calculator" class="nav-cta">Демо-расчёт</a>
+  <button class="burger" id="burger" type="button" aria-label="Открыть меню" aria-controls="navLinks" aria-expanded="false">
     <span></span><span></span><span></span>
   </button>
 </nav>
+</header>
 
 <!-- HERO -->
+<main id="main">
 <section class="hero" id="hero">
-  <div class="hero-bg">
-    <img src="https://image.qwenlm.ai/public_source/acb3bf70-dc47-4582-8634-f9a05c67c9cb/1ab2f52a4-2724-4ca3-9eef-7cb421467941.png" alt="Строительная опалубка">
-  </div>
+  <div class="hero-bg" aria-hidden="true"><div class="hero-blueprint"></div></div>
   <div class="hero-overlay"></div>
-  <div class="particles" id="particles"></div>
+  <div class="particles" id="particles" aria-hidden="true"></div>
   <div class="hero-content">
-    <div class="hero-badge">
-      <span class="dot"></span>
-      Лидер рынка с 2010 года
-    </div>
-    <h1>Аренда <span class="highlight">строительной опалубки</span> для масштабных проектов</h1>
-    <p>Поставляем современную стеновую, колонную и перекрытийную опалубку. Более 50 000 м² в наличии, доставка по всей России, техническая поддержка на объекте.</p>
+    <div class="hero-badge"><span class="dot"></span> Учебный веб-проект · демонстрационная версия</div>
+    <h1>Каталог <span class="highlight">строительной опалубки</span> с понятным демо-расчётом</h1>
+    <p>Исследуйте условные типы оборудования, фильтруйте карточки и проверьте, как меняется расчёт от площади и срока. Это не магазин и не арендодатель.</p>
+    <div class="demo-note"><strong>DEMO / вымышленные данные.</strong> Компания, цены и характеристики — учебные примеры. Заявки не принимаются, контакты не собираются, коммерческих предложений нет.</div>
     <div class="hero-buttons">
-      <a href="#catalog" class="btn-primary">
-        Смотреть каталог
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-      </a>
-      <a href="#calculator" class="btn-secondary">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="10" y2="10"/><line x1="14" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="10" y2="14"/><line x1="14" y1="14" x2="16" y2="14"/><line x1="8" y1="18" x2="10" y2="18"/><line x1="14" y1="18" x2="16" y2="18"/></svg>
-        Рассчитать стоимость
-      </a>
+      <a class="btn-primary" href="#catalog">Открыть демо-каталог</a>
+      <a class="btn-secondary" href="#calculator">Проверить расчёт</a>
     </div>
-    <div class="hero-stats">
-      <div class="hero-stat">
-        <h3><span class="counter" data-target="50000">0</span>+</h3>
-        <p>м² опалубки в парке</p>
-      </div>
-      <div class="hero-stat">
-        <h3><span class="counter" data-target="1200">0</span>+</h3>
-        <p>реализованных проектов</p>
-      </div>
-      <div class="hero-stat">
-        <h3><span class="counter" data-target="14">0</span></h3>
-        <p>лет на рынке</p>
-      </div>
-      <div class="hero-stat">
-        <h3><span class="counter" data-target="48">0</span></h3>
-        <p>регионов доставки</p>
-      </div>
+    <div class="hero-stats" aria-label="Что есть в прототипе">
+      <div class="hero-stat"><h3>5</h3><p>условных типов</p></div>
+      <div class="hero-stat"><h3>100%</h3><p>локальный расчёт</p></div>
+      <div class="hero-stat"><h3>0</h3><p>отправленных заявок</p></div>
     </div>
   </div>
 </section>
@@ -666,52 +705,13 @@
 <!-- ADVANTAGES -->
 <section class="advantages" id="advantages">
   <div class="container">
-    <div class="section-label reveal">Почему мы</div>
-    <h2 class="section-title reveal">Преимущества работы с нами</h2>
-    <p class="section-subtitle reveal">Мы обеспечиваем полный цикл — от подбора опалубки до её возврата с объекта</p>
+    <div class="section-label">Возможности прототипа</div>
+    <h2 class="section-title">Проверяемая интерактивность вместо рекламных обещаний</h2>
+    <p class="section-subtitle">Интерфейс демонстрирует пользовательский сценарий без серверных запросов, звонков и обработки персональных данных.</p>
     <div class="adv-grid">
-      <div class="adv-card reveal">
-        <div class="adv-icon">
-          <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-        </div>
-        <h3>Полный комплект</h3>
-        <p>Все необходимые элементы опалубки в наличии: панели, замки, подкосы, стяжки, консоли и крепёж. Никаких задержек.</p>
-      </div>
-      <div class="adv-card reveal">
-        <div class="adv-icon">
-          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-        </div>
-        <h3>Оперативная доставка</h3>
-        <p>Отгрузка в течение 24 часов после заказа. Собственный автопарк из 40+ единиц техники для перевозки по всей России.</p>
-      </div>
-      <div class="adv-card reveal">
-        <div class="adv-icon">
-          <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-        </div>
-        <h3>Инженерная поддержка</h3>
-        <p>Бесплатный расчёт раскладки опалубки, схемы монтажа и инструкции. Инженер на объекте при необходимости.</p>
-      </div>
-      <div class="adv-card reveal">
-        <div class="adv-icon">
-          <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-        </div>
-        <h3>Гибкие условия аренды</h3>
-        <p>Аренда от 1 месяца. Возможность выкупа, обмена и пролонгации. Скидки при длительной аренде до 30%.</p>
-      </div>
-      <div class="adv-card reveal">
-        <div class="adv-icon">
-          <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-        </div>
-        <h3>Гарантия качества</h3>
-        <p>Вся опалубка проходит техосмотр перед каждой отправкой. Ресурс панелей — до 300 оборотов. Замена брака — бесплатно.</p>
-      </div>
-      <div class="adv-card reveal">
-        <div class="adv-icon">
-          <svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-        </div>
-        <h3>Выгодные цены</h3>
-        <p>От 80 ₽/м² в сутки. Прозрачное ценообразование без скрытых платежей. Фиксация цены на весь период аренды.</p>
-      </div>
+      <article class="adv-card"><div class="adv-icon" aria-hidden="true">▦</div><h3>Каталог-пример</h3><p>Пять условных карточек в категориях. Это не список товаров в наличии и не технический паспорт.</p></article>
+      <article class="adv-card"><div class="adv-icon" aria-hidden="true">∑</div><h3>Прозрачная формула</h3><p>Площадь, демонстрационный тариф, 30-дневные периоды и учебная скидка. Расчёт выполняется в браузере.</p></article>
+      <article class="adv-card"><div class="adv-icon" aria-hidden="true">✓</div><h3>Без сбора контактов</h3><p>В этой версии нет форм имени, телефона, почты, оформления заказа, обещаний обратного звонка или оплаты.</p></article>
     </div>
   </div>
 </section>
@@ -723,147 +723,109 @@
       <div>
         <div class="section-label reveal">Каталог</div>
         <h2 class="section-title reveal">Виды опалубки</h2>
-        <p class="section-subtitle reveal">Подберём оптимальное решение под ваш проект и бюджет</p>
+        <p class="section-subtitle reveal">Интерактивные примеры — не складские остатки и не подтверждённые характеристики</p>
       </div>
-      <div class="catalog-tabs reveal">
-        <button class="catalog-tab active" data-filter="all">Все</button>
-        <button class="catalog-tab" data-filter="wall">Стеновая</button>
-        <button class="catalog-tab" data-filter="column">Колонная</button>
-        <button class="catalog-tab" data-filter="slab">Перекрытий</button>
+      <div class="catalog-tabs reveal" role="group" aria-label="Фильтр по типу опалубки">
+        <button type="button" class="catalog-tab active" data-filter="all">Все</button>
+        <button type="button" class="catalog-tab" data-filter="wall">Стеновая</button>
+        <button type="button" class="catalog-tab" data-filter="column">Колонная</button>
+        <button type="button" class="catalog-tab" data-filter="slab">Перекрытий</button>
+        <button type="button" class="catalog-tab" data-filter="large">Крупнощитовая</button>
+        <button type="button" class="catalog-tab" data-filter="volume">Объёмная</button>
       </div>
     </div>
+    <p id="catalogCount" aria-live="polite">Показано карточек: 5</p>
+    <p class="demo-note">Все карточки, характеристики и тарифы — <strong>вымышленные демонстрационные примеры</strong>, не спецификации производителя и не предложение аренды.</p>
     <div class="catalog-grid" id="catalogGrid">
       <!-- Card 1 -->
       <div class="product-card reveal" data-type="wall">
         <div class="product-img">
-          <img src="https://image.qwenlm.ai/public_source/acb3bf70-dc47-4582-8634-f9a05c67c9cb/1c5246c59-4104-4126-ae8e-cd24b40fc041.png" alt="Стеновая опалубка МД">
-          <span class="product-tag">Хит продаж</span>
+          <div class="product-illustration" role="img" aria-label="Схематичная иллюстрация: Стеновая опалубка МД"><span>DEMO</span></div>
+          <span class="product-tag">Демо-карточка</span>
         </div>
         <div class="product-info">
           <h3>Стеновая опалубка МД</h3>
-          <p>Модульная стеновая опалубка для возведения стен любой конфигурации. Максимальная высота заливки — до 6 метров.</p>
-          <div class="product-specs">
-            <span class="product-spec">Панели 3.3×3.0м</span>
-            <span class="product-spec">Нагрузка до 60 кН/м²</span>
-            <span class="product-spec">Сталь Q235</span>
-          </div>
+          <p>Иллюстративная категория для демонстрации фильтра и расчёта. Подбор и безопасность реального оборудования требуют документации поставщика.</p>
+          <div class="product-specs"><span class="product-spec">Условный пример · данные не для монтажа</span></div>
           <div class="product-price">
             <div>
-              <div class="price-value">от 90 ₽</div>
-              <div class="price-unit">за м² / сутки</div>
+              <div class="price-value">Демо: 90 ₽</div>
+              <div class="price-unit">условно за м² / сутки</div>
             </div>
-            <button class="product-btn" onclick="openModal()">Заказать</button>
+            <button type="button" class="product-btn" data-quote-type="wall">Рассчитать демо</button>
           </div>
         </div>
       </div>
       <!-- Card 2 -->
       <div class="product-card reveal" data-type="column">
         <div class="product-img">
-          <img src="https://image.qwenlm.ai/public_source/acb3bf70-dc47-4582-8634-f9a05c67c9cb/11ee3c6c9-8a3f-4593-9eb5-406247a44277.png" alt="Колонная опалубка">
-          <span class="product-tag">Новинка</span>
+          <div class="product-illustration" role="img" aria-label="Схематичная иллюстрация: Колонная опалубка"><span>DEMO</span></div>
+          <span class="product-tag">Демо-карточка</span>
         </div>
         <div class="product-info">
           <h3>Колонная опалубка</h3>
-          <p>Секционная колонная опалубка для монолитных колонн квадратного и круглого сечения. Быстрая сборка без крана.</p>
-          <div class="product-specs">
-            <span class="product-spec">Сечение 200–800мм</span>
-            <span class="product-spec">Высота до 4.5м</span>
-            <span class="product-spec">Алюминий/Сталь</span>
-          </div>
+          <p>Иллюстративная категория для демонстрации фильтра и расчёта. Подбор и безопасность реального оборудования требуют документации поставщика.</p>
+          <div class="product-specs"><span class="product-spec">Условный пример · данные не для монтажа</span></div>
           <div class="product-price">
             <div>
-              <div class="price-value">от 120 ₽</div>
-              <div class="price-unit">за м² / сутки</div>
+              <div class="price-value">Демо: 120 ₽</div>
+              <div class="price-unit">условно за м² / сутки</div>
             </div>
-            <button class="product-btn" onclick="openModal()">Заказать</button>
+            <button type="button" class="product-btn" data-quote-type="column">Рассчитать демо</button>
           </div>
         </div>
       </div>
       <!-- Card 3 -->
       <div class="product-card reveal" data-type="slab">
         <div class="product-img">
-          <img src="https://image.qwenlm.ai/public_source/acb3bf70-dc47-4582-8634-f9a05c67c9cb/19f686566-a549-4b4c-980a-4ac96f3bddd8.png" alt="Опалубка перекрытий">
+          <div class="product-illustration" role="img" aria-label="Схематичная иллюстрация: Опалубка перекрытий"><span>DEMO</span></div>
         </div>
         <div class="product-info">
           <h3>Опалубка перекрытий</h3>
-          <p>Система опалубки для монолитных перекрытий на телескопических стойках. Перекрытие толщиной до 600 мм.</p>
-          <div class="product-specs">
-            <span class="product-spec">Стойки 2–5.5м</span>
-            <span class="product-spec">Щиты 1.5×0.75м</span>
-            <span class="product-spec">Нагрузка до 55 кН/м²</span>
-          </div>
+          <p>Иллюстративная категория для демонстрации фильтра и расчёта. Подбор и безопасность реального оборудования требуют документации поставщика.</p>
+          <div class="product-specs"><span class="product-spec">Условный пример · данные не для монтажа</span></div>
           <div class="product-price">
             <div>
-              <div class="price-value">от 80 ₽</div>
-              <div class="price-unit">за м² / сутки</div>
+              <div class="price-value">Демо: 80 ₽</div>
+              <div class="price-unit">условно за м² / сутки</div>
             </div>
-            <button class="product-btn" onclick="openModal()">Заказать</button>
+            <button type="button" class="product-btn" data-quote-type="slab">Рассчитать демо</button>
           </div>
         </div>
       </div>
       <!-- Card 4 -->
-      <div class="product-card reveal" data-type="wall">
+      <div class="product-card reveal" data-type="large">
         <div class="product-img">
-          <img src="https://image.qwenlm.ai/public_source/acb3bf70-dc47-4582-8634-f9a05c67c9cb/1c5246c59-4104-4126-ae8e-cd24b40fc041.png" alt="Крупнощитовая опалубка">
+          <div class="product-illustration" role="img" aria-label="Схематичная иллюстрация: Крупнощитовая опалубка"><span>DEMO</span></div>
         </div>
         <div class="product-info">
           <h3>Крупнощитовая опалубка</h3>
-          <p>Крупноразмерные щиты для быстрого возведения стен жилых и промышленных зданий. Минимум стыков, максимум скорости.</p>
-          <div class="product-specs">
-            <span class="product-spec">Щиты до 6×3.3м</span>
-            <span class="product-spec">Подъём краном</span>
-            <span class="product-spec">Сталь оцинк.</span>
-          </div>
+          <p>Иллюстративная категория для демонстрации фильтра и расчёта. Подбор и безопасность реального оборудования требуют документации поставщика.</p>
+          <div class="product-specs"><span class="product-spec">Условный пример · данные не для монтажа</span></div>
           <div class="product-price">
             <div>
-              <div class="price-value">от 110 ₽</div>
-              <div class="price-unit">за м² / сутки</div>
+              <div class="price-value">Демо: 110 ₽</div>
+              <div class="price-unit">условно за м² / сутки</div>
             </div>
-            <button class="product-btn" onclick="openModal()">Заказать</button>
+            <button type="button" class="product-btn" data-quote-type="large">Рассчитать демо</button>
           </div>
         </div>
       </div>
       <!-- Card 5 -->
-      <div class="product-card reveal" data-type="slab">
+      <div class="product-card reveal" data-type="volume">
         <div class="product-img">
-          <img src="https://image.qwenlm.ai/public_source/acb3bf70-dc47-4582-8634-f9a05c67c9cb/19f686566-a549-4b4c-980a-4ac96f3bddd8.png" alt="Объёмная опалубка">
+          <div class="product-illustration" role="img" aria-label="Схематичная иллюстрация: Объёмная опалубка"><span>DEMO</span></div>
         </div>
         <div class="product-info">
           <h3>Объёмная опалубка</h3>
-          <p>Рамная система для перекрытий большой высоты и сложных конфигураций. Идеальна для торговых центров и паркингов.</p>
-          <div class="product-specs">
-            <span class="product-spec">Высота до 20м</span>
-            <span class="product-spec">Нагрузка до 60 кН/м²</span>
-            <span class="product-spec">Модульная</span>
-          </div>
+          <p>Иллюстративная категория для демонстрации фильтра и расчёта. Подбор и безопасность реального оборудования требуют документации поставщика.</p>
+          <div class="product-specs"><span class="product-spec">Условный пример · данные не для монтажа</span></div>
           <div class="product-price">
             <div>
-              <div class="price-value">от 100 ₽</div>
-              <div class="price-unit">за м² / сутки</div>
+              <div class="price-value">Демо: 100 ₽</div>
+              <div class="price-unit">условно за м² / сутки</div>
             </div>
-            <button class="product-btn" onclick="openModal()">Заказать</button>
-          </div>
-        </div>
-      </div>
-      <!-- Card 6 -->
-      <div class="product-card reveal" data-type="column">
-        <div class="product-img">
-          <img src="https://image.qwenlm.ai/public_source/acb3bf70-dc47-4582-8634-f9a05c67c9cb/11ee3c6c9-8a3f-4593-9eb5-406247a44277.png" alt="Подъёмно-переставная опалубка">
-        </div>
-        <div class="product-info">
-          <h3>Подъёмно-переставная</h3>
-          <p>Скользящая опалубка для высотного строительства башен, шахт лифтов и ядер жёсткости. Непрерывный процесс бетонирования.</p>
-          <div class="product-specs">
-            <span class="product-spec">Высота без ограничений</span>
-            <span class="product-spec">Гидравлический подъём</span>
-            <span class="product-spec">Автоматизация</span>
-          </div>
-          <div class="product-price">
-            <div>
-              <div class="price-value">от 150 ₽</div>
-              <div class="price-unit">за м² / сутки</div>
-            </div>
-            <button class="product-btn" onclick="openModal()">Заказать</button>
+            <button type="button" class="product-btn" data-quote-type="volume">Рассчитать демо</button>
           </div>
         </div>
       </div>
@@ -874,32 +836,13 @@
 <!-- HOW IT WORKS -->
 <section class="how-it-works" id="how">
   <div class="container">
-    <div style="text-align:center;">
-      <div class="section-label reveal" style="justify-content:center;">Процесс</div>
-      <h2 class="section-title reveal">Как это работает</h2>
-      <p class="section-subtitle reveal" style="margin:0 auto;">Четыре простых шага от заявки до сдачи объекта</p>
-    </div>
+    <div class="section-label">Сценарий демонстрации</div>
+    <h2 class="section-title">Как проверить прототип</h2>
     <div class="steps">
-      <div class="step reveal">
-        <div class="step-num">1</div>
-        <h3>Заявка и расчёт</h3>
-        <p>Оставьте заявку или позвоните нам. Инженер рассчитает потребность и подберёт оптимальный комплект опалубки.</p>
-      </div>
-      <div class="step reveal">
-        <div class="step-num">2</div>
-        <h3>Договор и оплата</h3>
-        <p>Заключаем договор с фиксированными условиями. Предоплата от 30%, остальное — по факту поставки.</p>
-      </div>
-      <div class="step reveal">
-        <div class="step-num">3</div>
-        <h3>Доставка на объект</h3>
-        <p>Доставляем опалубку в оговоренные сроки. Инструктаж по монтажу и техническая поддержка.</p>
-      </div>
-      <div class="step reveal">
-        <div class="step-num">4</div>
-        <h3>Возврат и закрытие</h3>
-        <p>После завершения работ забираем опалубку. Приёмка в течение 3 дней, прозрачный акт возврата.</p>
-      </div>
+      <div class="step"><div class="step-num">1</div><h3>Выберите категорию</h3><p>Отфильтруйте примеры опалубки в каталоге.</p></div>
+      <div class="step"><div class="step-num">2</div><h3>Перейдите к расчёту</h3><p>Нажмите «Рассчитать демо» на интересующей карточке.</p></div>
+      <div class="step"><div class="step-num">3</div><h3>Измените параметры</h3><p>Укажите площадь и число условных 30-дневных периодов.</p></div>
+      <div class="step"><div class="step-num">4</div><h3>Изучите результат</h3><p>Сравните сумму и формулу; она не является коммерческой сметой.</p></div>
     </div>
   </div>
 </section>
@@ -907,100 +850,49 @@
 <!-- CALCULATOR -->
 <section class="calculator" id="calculator">
   <div class="container">
-    <div style="text-align:center;">
-      <div class="section-label reveal" style="justify-content:center;">Калькулятор</div>
-      <h2 class="section-title reveal">Рассчитайте стоимость аренды</h2>
-      <p class="section-subtitle reveal" style="margin:0 auto;">Получите предварительную стоимость за 30 секунд</p>
-    </div>
-    <div class="calc-wrapper reveal">
+    <div class="section-label">Демо-калькулятор</div>
+    <h2 class="section-title">Учебный расчёт аренды</h2>
+    <p class="section-subtitle">Тарифы и скидки ниже вымышлены. Используется условный период в 30 дней, без доставки, НДС, залога и комплектующих.</p>
+    <div class="calc-wrapper">
       <div class="calc-grid">
         <div class="calc-group">
-          <label>Тип опалубки</label>
-          <select id="calcType">
-            <option value="wall">Стеновая опалубка</option>
-            <option value="column">Колонная опалубка</option>
-            <option value="slab">Опалубка перекрытий</option>
-            <option value="large">Крупнощитовая</option>
-            <option value="volume">Объёмная опалубка</option>
+          <label for="calcType">Тип опалубки</label>
+          <select id="calcType" aria-describedby="quotePolicy">
+            <option value="wall">Стеновая · 90 ₽/м²/сутки</option>
+            <option value="column">Колонная · 120 ₽/м²/сутки</option>
+            <option value="slab">Перекрытий · 80 ₽/м²/сутки</option>
+            <option value="large">Крупнощитовая · 110 ₽/м²/сутки</option>
+            <option value="volume">Объёмная · 100 ₽/м²/сутки</option>
           </select>
         </div>
         <div class="calc-group">
-          <label>Площадь (м²)</label>
-          <input type="number" id="calcArea" placeholder="Например: 500" value="500">
+          <label for="calcArea">Условная площадь (м²)</label>
+          <input type="number" id="calcArea" placeholder="Например: 500" value="500" min="0.01" max="10000" step="0.01" inputmode="decimal" aria-describedby="calcError quotePolicy">
         </div>
         <div class="calc-group">
-          <label>Срок аренды (месяцев)</label>
-          <input type="number" id="calcMonths" placeholder="Например: 3" value="3" min="1">
+          <label for="calcMonths">Срок (30-дневных периодов)</label>
+          <input type="number" id="calcMonths" placeholder="Например: 3" value="3" min="1" max="12" step="1" aria-describedby="calcError quotePolicy">
         </div>
       </div>
-      <div class="calc-result" id="calcResult">
-        <div class="total" id="calcTotal">135 000 ₽</div>
-        <div class="total-label">Предварительная стоимость за <span id="calcPeriod">3</span> мес.</div>
+      <p id="quotePolicy" class="demo-note">Скидки для учебного расчёта: 1 период — 0%, 2 — 5%, 3 — 10%, 4 — 12%, 5 — 15%, 6 и более — 18%. Не использовать для закупок или аренды.</p>
+      <p class="calc-error" id="calcError" role="alert"></p>
+      <div class="calc-result" id="calcResult" role="status" aria-live="polite" aria-atomic="true">
+        <div class="total" id="calcTotal">Требуется JavaScript</div>
+        <div class="total-label" id="calcBreakdown">Демонстрационные данные, не коммерческая оферта</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- TESTIMONIALS -->
-<section class="testimonials" id="reviews">
+<!-- DEMO LIMITATIONS -->
+<section class="testimonials" id="evidence">
   <div class="container">
-    <div style="text-align:center;">
-      <div class="section-label reveal" style="justify-content:center;">Отзывы</div>
-      <h2 class="section-title reveal">Что говорят наши клиенты</h2>
-      <p class="section-subtitle reveal" style="margin:0 auto;">Более 1200 компаний доверяют нам свои проекты</p>
-    </div>
+    <div class="section-label">Ограничения</div>
+    <h2 class="section-title">Что этот проект не обещает</h2>
     <div class="test-grid">
-      <div class="test-card reveal">
-        <div class="test-stars">
-          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-        </div>
-        <blockquote>«Арендовали опалубку для строительства жилого комплекса на 12 этажей. Всё привезли в срок, качество панелей отличное. Инженер помог с раскладкой — сэкономили 15% на объёме.»</blockquote>
-        <div class="test-author">
-          <div class="test-avatar">АК</div>
-          <div>
-            <div class="test-name">Алексей Козлов</div>
-            <div class="test-role">Генеральный директор, ООО «СтройИнвест»</div>
-          </div>
-        </div>
-      </div>
-      <div class="test-card reveal">
-        <div class="test-stars">
-          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-        </div>
-        <blockquote>«Работаем с ОпалубкаПро уже третий год. Для нас важна стабильность поставок — ни разу не подвели. Рекомендуем как надёжного партнёра для крупных объектов.»</blockquote>
-        <div class="test-author">
-          <div class="test-avatar">МС</div>
-          <div>
-            <div class="test-name">Марина Соколова</div>
-            <div class="test-role">Начальник отдела снабжения, ГК «Монолит»</div>
-          </div>
-        </div>
-      </div>
-      <div class="test-card reveal">
-        <div class="test-stars">
-          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-        </div>
-        <blockquote>«Строили паркинг на 500 машиномест. Объёмная опалубка позволила сделать перекрытия высотой 8 метров без проблем. Цены адекватные, сервис на уровне.»</blockquote>
-        <div class="test-author">
-          <div class="test-avatar">ДВ</div>
-          <div>
-            <div class="test-name">Дмитрий Волков</div>
-            <div class="test-role">Главный инженер, ЗАО «МегаСтрой»</div>
-          </div>
-        </div>
-      </div>
+      <article class="test-card"><h3>Нет настоящего поставщика</h3><p>Проект не подтверждает существование компании, складов, техники, договоров и сертификатов.</p></article>
+      <article class="test-card"><h3>Нет отзывов клиентов</h3><p>Вымышленные имена, отзывы и звёздные рейтинги удалены: портфолио показывает продуктовые решения, а не фиктивные достижения.</p></article>
+      <article class="test-card"><h3>Нет коммерческой цены</h3><p>Все числа и примеры оборудования — иллюстративные. Точный подбор опалубки требует инженерной документации и реальных предложений.</p></article>
     </div>
   </div>
 </section>
@@ -1008,386 +900,170 @@
 <!-- CTA -->
 <section class="cta-section">
   <div class="container cta-content">
-    <h2 class="reveal">Готовы начать ваш проект?</h2>
-    <p class="reveal">Получите бесплатную консультацию и расчёт стоимости опалубки для вашего объекта уже сегодня</p>
-    <a href="#contact" class="cta-btn reveal">
-      Получить расчёт бесплатно
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-    </a>
+    <h2>Проверьте сценарий самостоятельно</h2>
+    <p>Калькулятор работает в браузере без регистрации и ввода контактов.</p>
+    <a href="#calculator" class="cta-btn">Перейти к демо-расчёту</a>
   </div>
 </section>
 
-<!-- CONTACT -->
+<!-- ABOUT -->
 <section class="contact" id="contact">
   <div class="container">
-    <div class="section-label reveal">Контакты</div>
-    <h2 class="section-title reveal">Свяжитесь с нами</h2>
-    <p class="section-subtitle reveal">Ответим на все вопросы и поможем подобрать опалубку</p>
-    <div class="contact-grid">
-      <div class="contact-info reveal">
-        <div class="contact-item">
-          <div class="contact-icon">
-            <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-          </div>
-          <div>
-            <h4>Телефон</h4>
-            <p>+7 (495) 123-45-67<br>+7 (800) 555-35-35 (бесплатно)</p>
-          </div>
-        </div>
-        <div class="contact-item">
-          <div class="contact-icon">
-            <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-          </div>
-          <div>
-            <h4>Email</h4>
-            <p>info@opalubkapro.ru<br>sales@opalubkapro.ru</p>
-          </div>
-        </div>
-        <div class="contact-item">
-          <div class="contact-icon">
-            <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-          </div>
-          <div>
-            <h4>Адрес</h4>
-            <p>г. Москва, ул. Промышленная, д. 15<br>Склад: МО, г. Подольск, ул. Заводская, 7</p>
-          </div>
-        </div>
-        <div class="contact-item">
-          <div class="contact-icon">
-            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-          </div>
-          <div>
-            <h4>Режим работы</h4>
-            <p>Пн–Пт: 8:00–20:00<br>Сб: 9:00–16:00, Вс: выходной</p>
-          </div>
-        </div>
-      </div>
-      <form class="contact-form reveal" id="contactForm" onsubmit="handleSubmit(event)">
-        <div class="form-row">
-          <div class="form-group">
-            <label>Ваше имя</label>
-            <input type="text" placeholder="Иван Иванов" required>
-          </div>
-          <div class="form-group">
-            <label>Телефон</label>
-            <input type="tel" placeholder="+7 (___) ___-__-__" required>
-          </div>
-        </div>
-        <div class="form-group">
-          <label>Email</label>
-          <input type="email" placeholder="email@company.ru">
-        </div>
-        <div class="form-group">
-          <label>Сообщение</label>
-          <textarea placeholder="Опишите ваш проект: тип здания, площадь, сроки..."></textarea>
-        </div>
-        <button type="submit" class="form-submit">
-          Отправить заявку
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:inline;vertical-align:middle;margin-left:4px;"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-        </button>
-      </form>
+    <div class="section-label">О проекте</div>
+    <h2 class="section-title">Открытая инженерная демонстрация</h2>
+    <div class="feedback-card">
+      <p>Этот сайт — учебный веб-прототип для профессионального GitHub-портфолио. Он не арендует оборудование, не принимает заявки и не обслуживает клиентов.</p>
+      <p>Разработка ведётся по открытому <a href="https://github.com/ruslanudintsev-ai/opalubka/issues/2" rel="noopener noreferrer">техническому заданию Issue #2</a>. Исходный код: <a href="https://github.com/ruslanudintsev-ai/opalubka" rel="noopener noreferrer">репозиторий opalubka</a>.</p>
+      <p class="demo-note">Обсуждение исходников ведётся публично в GitHub. <strong>Не публикуйте там телефоны, электронную почту и другие персональные данные.</strong></p>
     </div>
   </div>
 </section>
+</main>
 
 <!-- FOOTER -->
 <footer class="footer">
   <div class="footer-grid">
     <div class="footer-brand">
-      <a href="#" class="nav-logo" style="font-size:1.3rem;">
-        <svg viewBox="0 0 40 40" fill="none" width="32" height="32">
-          <rect x="4" y="24" width="14" height="12" rx="2" fill="#F59E0B"/>
-          <rect x="22" y="14" width="14" height="22" rx="2" fill="#F59E0B" opacity="0.7"/>
-          <rect x="4" y="8" width="14" height="12" rx="2" fill="#F59E0B" opacity="0.5"/>
-          <rect x="22" y="4" width="14" height="6" rx="2" fill="#F59E0B" opacity="0.3"/>
-        </svg>
-        Опалубка<span>Про</span>
-      </a>
-      <p>Профессиональная аренда строительной опалубки с 2010 года. Надёжный партнёр для строительных компаний любого масштаба.</p>
+      <strong>Опалубка · DEMO</strong>
+      <p>Пример интерфейса и учебной бизнес-логики. Вымышленная компания, демонстрационные цены. Ни заявок, ни платежей, ни реальных отзывов.</p>
     </div>
     <div>
-      <h4>Каталог</h4>
+      <h4>Исследовать</h4>
       <ul class="footer-links">
-        <li><a href="#catalog">Стеновая опалубка</a></li>
-        <li><a href="#catalog">Колонная опалубка</a></li>
-        <li><a href="#catalog">Опалубка перекрытий</a></li>
-        <li><a href="#catalog">Крупнощитовая</a></li>
-        <li><a href="#catalog">Объёмная опалубка</a></li>
+        <li><a href="#catalog">Учебный каталог</a></li>
+        <li><a href="#calculator">Демо-расчёт</a></li>
+        <li><a href="#evidence">Ограничения</a></li>
       </ul>
     </div>
     <div>
-      <h4>Компания</h4>
+      <h4>Разработка</h4>
       <ul class="footer-links">
-        <li><a href="#advantages">О нас</a></li>
-        <li><a href="#reviews">Отзывы</a></li>
-        <li><a href="#how">Как работаем</a></li>
-        <li><a href="#calculator">Калькулятор</a></li>
-        <li><a href="#contact">Контакты</a></li>
-      </ul>
-    </div>
-    <div>
-      <h4>Документы</h4>
-      <ul class="footer-links">
-        <li><a href="#">Реквизиты</a></li>
-        <li><a href="#">Договор аренды</a></li>
-        <li><a href="#">Сертификаты</a></li>
-        <li><a href="#">Политика конфиденциальности</a></li>
+        <li><a href="https://github.com/ruslanudintsev-ai/opalubka">Исходный код</a></li>
+        <li><a href="https://github.com/ruslanudintsev-ai/opalubka/issues/2">Техническое задание</a></li>
+        <li><a href="#contact">О проекте и данных</a></li>
       </ul>
     </div>
   </div>
-  <div class="footer-bottom">
-    <span>© 2026 ОпалубкаПро. Все права защищены.</span>
-    <span>Разработка и аренда опалубки по всей России</span>
-  </div>
+  <div class="footer-bottom"><span>© 2026 · Учебный интерфейс Opalubka</span><span>Не коммерческая оферта · Никаких реальных обращений</span></div>
 </footer>
 
-<!-- MODAL -->
-<div class="modal-overlay" id="modal">
-  <div class="modal" id="modalContent">
-    <button class="modal-close" onclick="closeModal()">✕</button>
-    <div id="modalForm">
-      <h3>Заказать опалубку</h3>
-      <p>Оставьте заявку и мы перезвоним в течение 15 минут</p>
-      <form onsubmit="handleModalSubmit(event)">
-        <div class="form-group">
-          <label>Ваше имя</label>
-          <input type="text" placeholder="Иван Иванов" required>
-        </div>
-        <div class="form-group">
-          <label>Телефон</label>
-          <input type="tel" placeholder="+7 (___) ___-__-__" required>
-        </div>
-        <div class="form-group">
-          <label>Тип опалубки</label>
-          <select>
-            <option>Стеновая опалубка</option>
-            <option>Колонная опалубка</option>
-            <option>Опалубка перекрытий</option>
-            <option>Крупнощитовая</option>
-            <option>Объёмная опалубка</option>
-          </select>
-        </div>
-        <button type="submit" class="form-submit" style="width:100%;text-align:center;margin-top:1rem;">Отправить заявку</button>
-      </form>
-    </div>
-    <div id="modalSuccess" style="display:none;">
-      <div class="success-msg">
-        <svg viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="9 12 11.5 14.5 16 9.5"/></svg>
-        <h3>Заявка отправлена!</h3>
-        <p>Мы перезвоним вам в течение 15 минут в рабочее время.</p>
-      </div>
-    </div>
-  </div>
-</div>
-
 <!-- SCROLL TO TOP -->
-<button class="scroll-top" id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">
-  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>
-</button>
+<button class="scroll-top" id="scrollTop" type="button" aria-label="Прокрутить наверх">↑</button>
 
 <script>
-// NAVBAR SCROLL
+'use strict';
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const navbar = document.getElementById('navbar');
 const scrollTopBtn = document.getElementById('scrollTop');
-window.addEventListener('scroll', () => {
-  navbar.classList.toggle('scrolled', window.scrollY > 50);
-  scrollTopBtn.classList.toggle('visible', window.scrollY > 600);
-});
-
-// BURGER MENU
 const burger = document.getElementById('burger');
 const navLinks = document.getElementById('navLinks');
-burger.addEventListener('click', () => {
-  navLinks.classList.toggle('open');
-  const spans = burger.querySelectorAll('span');
-  if (navLinks.classList.contains('open')) {
-    spans[0].style.transform = 'rotate(45deg) translate(5px, 6px)';
-    spans[1].style.opacity = '0';
-    spans[2].style.transform = 'rotate(-45deg) translate(5px, -6px)';
-  } else {
-    spans[0].style.transform = '';
-    spans[1].style.opacity = '';
-    spans[2].style.transform = '';
-  }
-});
-
-navLinks.querySelectorAll('a').forEach(link => {
-  link.addEventListener('click', () => {
-    navLinks.classList.remove('open');
-    const spans = burger.querySelectorAll('span');
-    spans[0].style.transform = '';
-    spans[1].style.opacity = '';
-    spans[2].style.transform = '';
-  });
-});
-
-// PARTICLES
-const particlesContainer = document.getElementById('particles');
-for (let i = 0; i < 30; i++) {
-  const p = document.createElement('div');
-  p.className = 'particle';
-  p.style.left = Math.random() * 100 + '%';
-  p.style.animationDuration = (8 + Math.random() * 15) + 's';
-  p.style.animationDelay = Math.random() * 10 + 's';
-  p.style.width = p.style.height = (2 + Math.random() * 4) + 'px';
-  particlesContainer.appendChild(p);
-}
-
-// SCROLL REVEAL
-const revealElements = document.querySelectorAll('.reveal');
-const revealObserver = new IntersectionObserver((entries) => {
-  entries.forEach((entry, idx) => {
-    if (entry.isIntersecting) {
-      setTimeout(() => {
-        entry.target.classList.add('visible');
-      }, idx * 80);
-      revealObserver.unobserve(entry.target);
-    }
-  });
-}, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
-revealElements.forEach(el => revealObserver.observe(el));
-
-// COUNTER ANIMATION
-const counterElements = document.querySelectorAll('.counter');
-const counterObserver = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      const el = entry.target;
-      const target = parseInt(el.dataset.target);
-      const duration = 2000;
-      const startTime = performance.now();
-      const animateCounter = (currentTime) => {
-        const elapsed = currentTime - startTime;
-        const progress = Math.min(elapsed / duration, 1);
-        const eased = 1 - Math.pow(1 - progress, 3);
-        el.textContent = Math.floor(eased * target).toLocaleString('ru-RU');
-        if (progress < 1) requestAnimationFrame(animateCounter);
-        else el.textContent = target.toLocaleString('ru-RU');
-      };
-      requestAnimationFrame(animateCounter);
-      counterObserver.unobserve(el);
-    }
-  });
-}, { threshold: 0.5 });
-counterElements.forEach(c => counterObserver.observe(c));
-
-// CATALOG FILTER
-const filterTabs = document.querySelectorAll('.catalog-tab');
-const productCards = document.querySelectorAll('.product-card');
-filterTabs.forEach(tab => {
-  tab.addEventListener('click', () => {
-    filterTabs.forEach(t => t.classList.remove('active'));
-    tab.classList.add('active');
-    const filterValue = tab.dataset.filter;
-    productCards.forEach(card => {
-      if (filterValue === 'all' || card.dataset.type === filterValue) {
-        card.style.display = '';
-        card.style.animation = 'fadeInUp 0.5s ease both';
-      } else {
-        card.style.display = 'none';
-      }
-    });
-  });
-});
-
-// CALCULATOR
 const calcTypeEl = document.getElementById('calcType');
 const calcAreaEl = document.getElementById('calcArea');
 const calcMonthsEl = document.getElementById('calcMonths');
 const calcTotalEl = document.getElementById('calcTotal');
-const calcPeriodEl = document.getElementById('calcPeriod');
+const calcBreakdownEl = document.getElementById('calcBreakdown');
+const calcErrorEl = document.getElementById('calcError');
 
-const priceMap = { wall: 90, column: 120, slab: 80, large: 110, volume: 100 };
-const discountMap = { 1: 1, 2: 0.95, 3: 0.9, 4: 0.88, 5: 0.85, 6: 0.82 };
+const priceMap = Object.freeze({ wall: 90, column: 120, slab: 80, large: 110, volume: 100 });
+const discountMap = Object.freeze({ 1: 1, 2: 0.95, 3: 0.90, 4: 0.88, 5: 0.85 });
+const discountFor = (months) => discountMap[months] ?? 0.82;
+const money = new Intl.NumberFormat('ru-RU', { maximumFractionDigits: 0 });
+const scrollMode = prefersReducedMotion ? 'auto' : 'smooth';
+
+function setMenu(open) {
+  navLinks.classList.toggle('open', open);
+  burger.setAttribute('aria-expanded', String(open));
+  burger.setAttribute('aria-label', open ? 'Закрыть меню' : 'Открыть меню');
+}
+burger.addEventListener('click', () => setMenu(burger.getAttribute('aria-expanded') !== 'true'));
+navLinks.querySelectorAll('a').forEach(link => link.addEventListener('click', () => setMenu(false)));
+document.addEventListener('keydown', event => {
+  if (event.key === 'Escape' && burger.getAttribute('aria-expanded') === 'true') {
+    setMenu(false);
+    burger.focus();
+  }
+});
+window.matchMedia('(min-width: 769px)').addEventListener('change', event => {
+  if (event.matches) setMenu(false);
+});
+window.addEventListener('scroll', () => {
+  navbar.classList.toggle('scrolled', window.scrollY > 50);
+  scrollTopBtn.classList.toggle('visible', window.scrollY > 600);
+});
+scrollTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: scrollMode }));
+
+const revealElements = document.querySelectorAll('.reveal');
+if (prefersReducedMotion || !('IntersectionObserver' in window)) {
+  revealElements.forEach(element => element.classList.add('visible'));
+} else {
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.08 });
+  revealElements.forEach(element => observer.observe(element));
+}
+
+// Filter buttons are not tab widgets: aria-pressed denotes an active filter.
+const filters = document.querySelectorAll('.catalog-tab');
+const cards = document.querySelectorAll('.product-card');
+filters.forEach(filter => {
+  filter.setAttribute('aria-pressed', String(filter.dataset.filter === 'all'));
+  filter.addEventListener('click', () => {
+    const type = filter.dataset.filter;
+    filters.forEach(item => {
+      const active = item === filter;
+      item.classList.toggle('active', active);
+      item.setAttribute('aria-pressed', String(active));
+    });
+    cards.forEach(card => { card.hidden = type !== 'all' && card.dataset.type !== type; });
+    document.getElementById('catalogCount').textContent =
+      'Показано карточек: ' + [...cards].filter(card => !card.hidden).length;
+  });
+});
 
 function updateCalculator() {
-  const selectedType = calcTypeEl.value;
-  const areaValue = parseInt(calcAreaEl.value) || 0;
-  const monthsValue = parseInt(calcMonthsEl.value) || 1;
-  const basePrice = priceMap[selectedType] || 90;
-  const totalDays = monthsValue * 30;
-  const discount = discountMap[monthsValue] || 0.85;
-  const totalCost = Math.round(areaValue * basePrice * totalDays * discount);
-  calcTotalEl.textContent = totalCost.toLocaleString('ru-RU') + ' ₽';
-  calcPeriodEl.textContent = monthsValue;
+  const area = Number(calcAreaEl.value);
+  const months = Number(calcMonthsEl.value);
+  const validArea = calcAreaEl.value.trim() !== '' && Number.isFinite(area) && area >= 0.01 && area <= 10000 && Math.round(area * 100) === area * 100;
+  const validMonths = calcMonthsEl.value.trim() !== '' && Number.isSafeInteger(months) && months >= 1 && months <= 12;
+  const validType = Object.hasOwn(priceMap, calcTypeEl.value);
+  calcAreaEl.setAttribute('aria-invalid', String(!validArea));
+  calcMonthsEl.setAttribute('aria-invalid', String(!validMonths));
+  if (!validArea || !validMonths || !validType) {
+    calcTotalEl.textContent = '—';
+    calcBreakdownEl.textContent = 'Расчёт не выполнен';
+    calcErrorEl.textContent = 'Проверьте площадь (0,01–10 000 м², до 2 знаков) и срок (целое число от 1 до 12 периодов).';
+    return;
+  }
+  calcErrorEl.textContent = '';
+  const days = months * 30;
+  const rate = priceMap[calcTypeEl.value];
+  const discount = discountFor(months);
+  const total = Math.round(area * rate * days * discount);
+  calcTotalEl.textContent = money.format(total) + ' ₽ · DEMO';
+  calcBreakdownEl.textContent =
+    money.format(area) + ' м² × ' + rate + ' ₽/м²/сутки × ' + days + ' дней × ' +
+    discount.toLocaleString('ru-RU') + ' = ' + money.format(total) + ' ₽. Не оферта.';
 }
-
-calcTypeEl.addEventListener('change', updateCalculator);
-calcAreaEl.addEventListener('input', updateCalculator);
-calcMonthsEl.addEventListener('input', updateCalculator);
+[calcTypeEl, calcAreaEl, calcMonthsEl].forEach(el => {
+  el.addEventListener(el.tagName === 'SELECT' ? 'change' : 'input', updateCalculator);
+});
 updateCalculator();
 
-// MODAL
-function openModal() {
-  document.getElementById('modal').classList.add('active');
-  document.getElementById('modalForm').style.display = '';
-  document.getElementById('modalSuccess').style.display = 'none';
-  document.body.style.overflow = 'hidden';
-}
-function closeModal() {
-  document.getElementById('modal').classList.remove('active');
-  document.body.style.overflow = '';
-}
-document.getElementById('modal').addEventListener('click', (e) => {
-  if (e.target === e.currentTarget) closeModal();
-});
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') closeModal();
-});
-
-// FORM SUBMIT
-function handleSubmit(e) {
-  e.preventDefault();
-  const btn = e.target.querySelector('.form-submit');
-  const originalHTML = btn.innerHTML;
-  btn.innerHTML = '✓ Заявка отправлена!';
-  btn.style.background = var_green;
-  setTimeout(() => {
-    btn.innerHTML = originalHTML;
-    btn.style.background = '';
-    e.target.reset();
-  }, 3000);
-}
-function handleModalSubmit(e) {
-  e.preventDefault();
-  document.getElementById('modalForm').style.display = 'none';
-  document.getElementById('modalSuccess').style.display = '';
-  setTimeout(() => {
-    closeModal();
-  }, 2500);
-}
-// Fix for CSS variable reference in JS
-var var_green = '#22C55E';
-
-// SMOOTH SCROLL
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-  anchor.addEventListener('click', function(e) {
-    const targetEl = document.querySelector(this.getAttribute('href'));
-    if (targetEl) {
-      e.preventDefault();
-      targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
+// Card action updates a real local calculator; it does NOT submit an order.
+document.querySelectorAll('[data-quote-type]').forEach(button => {
+  button.addEventListener('click', () => {
+    calcTypeEl.value = button.dataset.quoteType;
+    updateCalculator();
+    document.getElementById('calculator').scrollIntoView({ behavior: scrollMode, block: 'start' });
+    calcTypeEl.focus({ preventScroll: true });
   });
 });
-
-// Active nav link on scroll
-const sections = document.querySelectorAll('section[id]');
-window.addEventListener('scroll', () => {
-  let current = '';
-  sections.forEach(section => {
-    const sectionTop = section.offsetTop - 100;
-    if (scrollY >= sectionTop) {
-      current = section.getAttribute('id');
-    }
-  });
-  navLinks.querySelectorAll('a').forEach(link => {
-    link.style.color = '';
-    if (link.getAttribute('href') === '#' + current) {
-      link.style.color = 'var(--primary)';
-    }
-  });
-});
-</script>
+</script></script>
 </body>
 </html>
 

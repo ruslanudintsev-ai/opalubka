@@ -1,0 +1,97 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import EquipmentCard from '../components/EquipmentCard.astro';
+import { equipment, categories } from '../data/catalog.ts';
+---
+<BaseLayout title="Опалубка — инженерный демо-проект" description="Открытый учебный каталог опалубки с прозрачным локальным демо-калькулятором. Вымышленные данные, без заявок, продаж и сбора контактов.">
+  <header class="site-header">
+    <div class="header-inner container">
+      <a class="wordmark" href="#top" aria-label="Опалубка, начало страницы">
+        <span class="mark" aria-hidden="true">▥</span>
+        <span>ОПАЛУБКА<span class="accent">/</span><small>LAB</small></span>
+      </a>
+      <nav aria-label="Главное меню">
+        <a href="#catalog">Каталог</a>
+        <a href="#calculator">Калькулятор</a>
+        <a href="#about">О проекте</a>
+      </nav>
+      <a class="header-link" href="https://github.com/ruslanudintsev-ai/opalubka" rel="noopener noreferrer">GitHub <span aria-hidden="true">↗</span></a>
+    </div>
+  </header>
+  <main id="main">
+    <section class="hero container" id="top" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <div class="eyebrow"><span class="live-dot"></span> PUBLIC PORTFOLIO · NO COMMERCIAL SERVICES</div>
+        <h1 id="hero-title">Инженерный подход <span>к простым решениям.</span></h1>
+        <p class="hero-lede">Интерактивный каталог оборудования и расчёт аренды — как открытый, воспроизводимый веб-прототип. Настоящих продаж, поставок и заявок здесь нет.</p>
+        <div class="hero-actions"><a class="button button-primary" href="#catalog">Исследовать каталог <span aria-hidden="true">↗</span></a><a class="button button-secondary" href="#calculator">Открыть калькулятор</a></div>
+        <div class="hero-proof"><span>01 / Открытые данные</span><span>02 / Без персональных данных</span><span>03 / Проверяемая формула</span></div>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <div class="art-caption">FORMWORK / CONCEPT MODEL <span>FIG. 01</span></div>
+        <svg class="blueprint" viewBox="0 0 420 400" fill="none">
+          <g stroke="#F5A623" stroke-width="2.5" stroke-linejoin="round">
+            <path d="M86 291V94L226 48L340 115V318L199 369Z"/><path d="M86 94L199 155L340 115M199 155V369M226 48V254M86 191L199 252L340 215"/>
+            <path d="M116 108V307M156 130V333M246 70V351M287 92V338"/>
+          </g>
+          <g stroke="#8FD6D8" stroke-width="1.4" opacity=".5"><path d="M42 311L199 396L376 326M42 311V75L227 13L377 98V326"/><path d="M42 75L199 158L377 98M199 158V396"/></g>
+          <g fill="#F5A623"><circle cx="86" cy="94" r="5"/><circle cx="340" cy="115" r="5"/><circle cx="199" cy="369" r="5"/></g>
+        </svg>
+        <div class="art-bottom"><span>CONCEPT ONLY — NOT ENGINEERING DRAWING</span><span>R.01</span></div>
+      </div>
+    </section>
+    <section class="notice-block" aria-label="Статус проекта">
+      <div class="container notice-inner">
+        <strong>DEMO / НЕ КОММЕРЧЕСКИЙ ПРОЕКТ</strong>
+        <p>Компания вымышленная. Любые цены, категории и иллюстрации служат только демонстрацией кода; это не технические спецификации и не оферта.</p>
+      </div>
+    </section>
+    <section class="catalog-section section" id="catalog" aria-labelledby="catalog-title">
+      <div class="container">
+        <div class="section-head"><div><div class="section-index">01 — ТИПИЗИРОВАННЫЙ КАТАЛОГ</div><h2 id="catalog-title">Разные задачи.<br/><em>Один понятный интерфейс.</em></h2></div><p>Пять вымышленных примеров из локального TypeScript-каталога. Выберите категорию и перейдите к демонстрационному расчёту.</p></div>
+        <div class="filters" role="group" aria-label="Фильтр оборудования">
+          {categories.map((category, i) => <button type="button" class:list={['filter-button', { active: i === 0 }]} data-filter={category.id} aria-pressed={i === 0 ? 'true' : 'false'}>{category.label}</button>)}
+          <span class="filter-count" id="catalog-count" aria-live="polite">5 / 5</span>
+        </div>
+        <div class="equipment-grid">{equipment.map((item, index) => <EquipmentCard item={item} index={index} />)}</div>
+      </div>
+    </section>
+    <section class="calculator-section section" id="calculator" aria-labelledby="calculator-title">
+      <div class="container">
+        <div class="section-index">02 — ПОВТОРЯЕМЫЙ РАСЧЁТ</div>
+        <div class="section-head"><div><h2 id="calculator-title">Числа с <em>объяснением.</em></h2><p>Все тарифы условные, а месяц моделируется как 30 дней. Никаких скрытых серверных запросов.</p></div></div>
+        <div class="calculator-layout">
+          <div class="controls-panel">
+            <label for="equipment">Тип оборудования</label>
+            <select id="equipment" aria-describedby="quote-policy">{equipment.map(item => <option value={item.id}>{item.name} — {item.dailyRateRubPerM2} ₽/м²/сутки</option>)}</select>
+            <div class="input-columns">
+              <div><label for="area">Площадь, м²</label><input id="area" type="number" min="0.01" max="10000" step="0.01" value="500" inputmode="decimal" aria-describedby="quote-error quote-policy" /></div>
+              <div><label for="periods">Срок, 30-дневных периодов</label><input id="periods" type="number" min="1" max="12" step="1" value="3" aria-describedby="quote-error quote-policy" /></div>
+            </div>
+            <p class="policy" id="quote-policy">Учебная скидка: 1 / 0%, 2 / 5%, 3 / 10%, 4 / 12%, 5 / 15%, от 6 / 18%. Не включены НДС, доставка, залог, монтаж и комплектующие.</p>
+            <p class="input-error" id="quote-error" role="alert"></p>
+          </div>
+          <div class="result-panel" aria-live="polite" aria-atomic="true" id="quote-result">
+            <div class="result-top"><span>ПРЕДВАРИТЕЛЬНАЯ СУММА / DEMO</span><span>₽ RUB</span></div>
+            <output id="total" for="equipment area periods">Требуется JavaScript</output>
+            <p id="breakdown">Вычисляется локально. Никакой отправки данных.</p>
+            <div class="result-foot"><span>Условная арифметика — не оферта</span><span>NO PII ↗</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="about-section section" id="about" aria-labelledby="about-title">
+      <div class="container about-grid">
+        <div><div class="section-index">03 — ИНЖЕНЕРНЫЙ ПОДХОД</div><h2 id="about-title">Продукт без<br/><em>выдуманных обещаний.</em></h2></div>
+        <div class="about-text">
+          <p>Этот проект создаётся для демонстрации архитектуры сайта, доступных интерфейсов, чистых модулей, тестируемого расчёта и процесса AI-assisted разработки.</p>
+          <p>Здесь нет реальной компании, реального ассортимента, отзывов клиентов, заявок, оплаты и обработки контактных данных. Иллюстрации созданы вручную как SVG/CSS для этого проекта.</p>
+          <a href="https://github.com/ruslanudintsev-ai/opalubka/issues/2" rel="noopener noreferrer">Открыть техническое задание <span aria-hidden="true">↗</span></a>
+          <p class="privacy-text">Не публикуйте личные данные в публичных GitHub issues.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer class="site-footer"><div class="container footer-inner"><strong>ОПАЛУБКА / LAB</strong><span>Открытый учебный прототип · 2026 · NO ORDERS</span><a href="#top">Наверх ↑</a></div></footer>
+  <script>import '../scripts/demo.ts';</script>
+</BaseLayout>

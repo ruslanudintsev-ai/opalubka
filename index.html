@@ -393,7 +393,7 @@
   }
   .cta-section::before {
     content: ''; position: absolute; inset: 0;
-    background: url("image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='0.06'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    background: none;
   }
   .cta-content { position: relative; z-index: 1; }
   .cta-section h2 {
@@ -1028,7 +1028,7 @@ filters.forEach(filter => {
 function updateCalculator() {
   const area = Number(calcAreaEl.value);
   const months = Number(calcMonthsEl.value);
-  const validArea = calcAreaEl.value.trim() !== '' && Number.isFinite(area) && area >= 0.01 && area <= 10000 && Math.round(area * 100) === area * 100;
+  const validArea = calcAreaEl.value.trim() !== '' && Number.isFinite(area) && area >= 0.01 && area <= 10000 && Math.abs(Math.round(area * 100) - area * 100) < 1e-7;
   const validMonths = calcMonthsEl.value.trim() !== '' && Number.isSafeInteger(months) && months >= 1 && months <= 12;
   const validType = Object.hasOwn(priceMap, calcTypeEl.value);
   calcAreaEl.setAttribute('aria-invalid', String(!validArea));
@@ -1063,7 +1063,7 @@ document.querySelectorAll('[data-quote-type]').forEach(button => {
     calcTypeEl.focus({ preventScroll: true });
   });
 });
-</script></script>
+</script>
 </body>
 </html>
 

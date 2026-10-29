@@ -1,8 +1,8 @@
 # P0 baseline audit — Opalubka
 
-> **Status:** source audit complete; browser/performance/accessibility runtime QA **NOT performed** (EVIDENCE_GAP).  
-> **Date:** 2026-10-29. **Tracked source:** `main@28c1fe9fc8d1aa4817a089dff18a00941fdb39e8`.  
-> **Issue:** [#2](https://github.com/ruslanudintsev-ai/opalubka/issues/2).  
+> **Status:** source audit complete; browser/performance/accessibility runtime QA **NOT performed** (EVIDENCE_GAP).
+> **Date:** 2026-10-29. **Tracked source:** `main@28c1fe9fc8d1aa4817a089dff18a00941fdb39e8`.
+> **Issue:** [#2](https://github.com/ruslanudintsev-ai/opalubka/issues/2).
 > **Scope:** documentation-only Draft PR. No production, DNS, CI deployment, billing or real personal-data processing.
 
 ## Product truth and boundary

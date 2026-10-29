@@ -1,9 +1,9 @@
 # Architecture decision — Opalubka portfolio demo
 
-**ADR-001 · Proposed / scoped approval for next PR only**  
-Date: 2026-10-29  
-Issue: [#2](https://github.com/ruslanudintsev-ai/opalubka/issues/2)  
-Baseline: `main@28c1fe9fc8d1aa4817a089dff18a00941fdb39e8`  
+**ADR-001 · Proposed / scoped approval for next PR only**
+Date: 2026-10-29
+Issue: [#2](https://github.com/ruslanudintsev-ai/opalubka/issues/2)
+Baseline: `main@28c1fe9fc8d1aa4817a089dff18a00941fdb39e8`
 Supporting evidence: [AUDIT_BASELINE.md](./AUDIT_BASELINE.md)
 
 ## Context and constraints

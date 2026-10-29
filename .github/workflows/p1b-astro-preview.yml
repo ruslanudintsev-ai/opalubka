@@ -25,8 +25,6 @@ jobs:
         with:
           node-version: '24'
           package-manager-cache: false
-      - name: Generate lock for verification
-        run: npm install --package-lock-only --ignore-scripts --no-audit --no-fund
       - name: Install reproducibly
         run: npm ci --no-audit --no-fund
       - name: Typecheck Astro and TypeScript
@@ -39,6 +37,3 @@ jobs:
         run: |
           test -s dist/index.html
           node -e 'const fs=require("node:fs");const s=fs.readFileSync("dist/index.html","utf8");if(!s.includes("DEMO")||s.includes("Заявка отправлена")||s.includes("image.qwenlm.ai"))process.exit(1);'
-      - name: Print lock for initial tracked lockfile creation
-        run: |
-          node -e 'const fs=require("node:fs"),s=fs.readFileSync("package-lock.json","utf8");console.log("LOCK_BEGIN");for(let i=0;i<s.length;i+=3000)console.log("LOCK_CHUNK "+(i/3000)+" "+JSON.stringify(s.slice(i,i+3000)));console.log("LOCK_END");'

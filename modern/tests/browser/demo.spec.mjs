@@ -123,3 +123,29 @@ test('reduced motion and no third-party network writes', async ({ page }) => {
   await expect(page.locator('.equipment-card:visible')).toHaveCount(2);
   expect(issues).toEqual([]);
 });
+
+test('each fixture has its own original schematic and mobile labels stay readable', async ({ page }) => {
+  const issues = collectFailures(page);
+  for (const width of [320, 360, 390]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto('/');
+    const diagrams = await page.locator('svg.tech-drawing').evaluateAll(nodes =>
+      nodes.map(node => ({
+        kind: node.getAttribute('data-illustration'),
+        paths: [...node.querySelectorAll('path')].map(p => p.getAttribute('d')).join(' / '),
+        hidden: node.getAttribute('aria-hidden'),
+      }))
+    );
+    expect(diagrams).toHaveLength(5);
+    expect(new Set(diagrams.map(d => d.kind)).size).toBe(5);
+    expect(new Set(diagrams.map(d => d.paths)).size, 'repeated product drawings').toBe(5);
+    expect(diagrams.every(d => d.hidden === 'true')).toBe(true);
+    for (const selector of ['.hero-proof', '.equipment-kicker', '.equipment-rate span', '.visual-label', '.filter-button', '.policy']) {
+      const pixels = await page.locator(selector).first().evaluate(el => parseFloat(getComputedStyle(el).fontSize));
+      expect(pixels, selector + ' font-size at ' + width).toBeGreaterThanOrEqual(12);
+    }
+    const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+    expect(overflow, 'horizontal overflow at ' + width).toBeLessThanOrEqual(1);
+  }
+  expect(issues).toEqual([]);
+});

@@ -6,7 +6,7 @@ const fields = ['first-contentful-paint', 'largest-contentful-paint', 'cumulativ
 const reports = ['mobile', 'desktop'];
 const summaries = {};
 for (const mode of reports) {
-  const doc = JSON.parse(readFileSync(join('quality-reports', 'lighthouse-' + mode + '.json'), 'utf8'));
+  const doc = JSON.parse(readFileSync(join('quality-reports', 'lighthouse-' + mode + '.report.json'), 'utf8'));
   if (doc.runtimeError) throw new Error(mode + ' Lighthouse runtime error: ' + doc.runtimeError.message);
   const finalUrl = new URL(doc.finalDisplayedUrl || doc.finalUrl || '');
   if (finalUrl.hostname !== '127.0.0.1' || finalUrl.port !== '4321') {

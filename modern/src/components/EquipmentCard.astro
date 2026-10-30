@@ -21,7 +21,7 @@ const { item, index } = Astro.props;
     <p>{item.subtitle}. Параметры не являются техническими характеристиками производителя.</p>
     <div class="equipment-bottom">
       <div class="equipment-rate"><strong>{item.dailyRateRubPerM2} ₽</strong><span>/ м² / сутки · демо</span></div>
-      <button class="select-button" type="button" data-select-equipment={item.id} aria-label={`Рассчитать демо: ${item.name}`}>
+      <button class="select-button" type="button" data-select-equipment={item.id} aria-label={`Выбрать ${item.name} для демо-расчёта`}>
         Выбрать <span aria-hidden="true">↗</span>
       </button>
     </div>

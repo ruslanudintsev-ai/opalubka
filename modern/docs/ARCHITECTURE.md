@@ -64,7 +64,7 @@ The owner must choose a target and approve a **separate GO** before any hosting/
 - No user data collection: no contact forms, backend fetches, analytics or cookies in the described source. Third-party hosting may still log access; that is **not verified**.
 - Catalog prices are entirely illustrative, not market data or a legal offer.
 - The exact point-in-time test result is in GitHub workflow runs; local Lighthouse is not field Core Web Vitals and automated axe is not a full screen-reader acceptance.
-- All drawings were created as project-owned source rather than copied from vendors. Other open-source packages retain upstream licenses; project licensing needs an owner decision.
+- All drawings were created as project-owned source rather than copied from vendors. Other open-source packages retain upstream licenses; the owner approved MIT for project-controlled source/docs/original SVG in the separate integration Draft PR #6. See its root `LICENSE` and `docs/RIGHTS_AND_ASSET_AUDIT.md`. This is not a grant over third-party packages.
 - Implementing agent self-checks must never be described as independent reviewer approval.
 
 **Source of truth:** [Issue #2](https://github.com/ruslanudintsev-ai/opalubka/issues/2). **No merge, deploy, billing, PII collection or profile update without owner-approved scope.**

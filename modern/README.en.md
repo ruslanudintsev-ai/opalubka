@@ -43,6 +43,6 @@ Supported area: 0.01–10,000 m², at most two decimals. Duration: 1–12 whole 
 
 ## Privacy and provenance
 
-See [Privacy and data boundaries](./docs/PRIVACY_AND_DATA.md). Illustrations are original code-based schematics, not construction instructions. Upstream open-source dependencies have their own licenses. Do not assume a project-wide license grant before the owner chooses one.
+See [Privacy and data boundaries](./docs/PRIVACY_AND_DATA.md). Illustrations are original code-based schematics, not construction instructions. Upstream open-source dependencies retain their own licenses. The owner approved **MIT** for the project-controlled source, documentation and original SVG, recorded in the separate stacked integration **Draft PR #6** (`LICENSE`, `docs/RIGHTS_AND_ASSET_AUDIT.md`); PR #5 and `main` are not merged or published.
 
 **NO_MERGE / NO_DEPLOY / NO_BILLING / NO_SECRETS / NO_PII_COLLECTION / NO_PROFILE_UPDATE without the owner's separate authorization.**

@@ -1,0 +1,111 @@
+name: P2 local Lighthouse and dependency security
+
+on:
+  pull_request:
+    paths:
+      - modern/**
+      - .github/workflows/p2-local-quality.yml
+  workflow_dispatch:
+
+concurrency:
+  group: p2-local-quality-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+
+jobs:
+  local-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    defaults:
+      run:
+        working-directory: modern
+    steps:
+      - name: Checkout exact candidate HEAD
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ env.SOURCE_SHA }}
+      - name: Assert exact source provenance
+        run: |
+          test "$(git rev-parse HEAD)" = "$SOURCE_SHA"
+          echo "QUALITY_CANDIDATE_SHA=$SOURCE_SHA"
+      - name: Use Node 24
+        uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+          package-manager-cache: false
+      - name: Bootstrap Lighthouse addition into integrity lock (temporary)
+        run: npm install --package-lock-only --ignore-scripts --no-audit --no-fund
+      - name: Emit updated lockfile to finalize tracked dependencies (temporary)
+        run: |
+          node -e 'const fs=require("node:fs"),s=fs.readFileSync("package-lock.json","utf8");console.log("LOCK_BEGIN");for(let i=0;i<s.length;i+=3000)console.log("LOCK_CHUNK "+(i/3000)+" "+JSON.stringify(s.slice(i,i+3000)));console.log("LOCK_END");'
+      - name: Locked install
+        run: npm ci --no-fund --no-audit
+      - name: Build production static site
+        run: |
+          npm run check
+          npm test
+          npm run build
+          npm run check:artifact
+      - name: Audit production dependencies
+        run: |
+          mkdir -p quality-reports
+          audit_status=0
+          npm audit --omit=dev --json > quality-reports/npm-audit-production.json || audit_status=$?
+          if [ "$audit_status" -gt 1 ]; then
+            echo "npm audit failed with unexpected status $audit_status"
+            exit 1
+          fi
+          npm run check:dependencies
+      - name: Verify real local Chrome installation
+        run: |
+          CHROME_BIN=$(command -v google-chrome || command -v google-chrome-stable || command -v chromium || true)
+          if [ -z "$CHROME_BIN" ]; then
+            echo "System Chrome not found; installing Playwright Chromium"
+            npx playwright install chromium
+            CHROME_BIN=$(node --input-type=module -e 'import { chromium } from "@playwright/test"; console.log(chromium.executablePath())')
+          fi
+          test -x "$CHROME_BIN"
+          echo "CHROME_PATH=$CHROME_BIN" >> "$GITHUB_ENV"
+          echo "Local Chrome executable detected."
+      - name: Run local Lighthouse mobile and desktop
+        run: |
+          mkdir -p quality-reports
+          npm run preview -- --port 4321 > /tmp/opalubka-lh-preview.log 2>&1 &
+          preview_pid=$!
+          trap 'kill "$preview_pid" 2>/dev/null || true' EXIT
+          ready=0
+          for attempt in $(seq 1 30); do
+            if curl -fs -o /dev/null http://127.0.0.1:4321/; then
+              ready=1
+              echo "LIGHTHOUSE_LOCAL_PREVIEW_READY"
+              break
+            fi
+            sleep 2
+          done
+          if [ "$ready" -ne 1 ]; then
+            cat /tmp/opalubka-lh-preview.log
+            exit 1
+          fi
+          for mode in mobile desktop; do
+            preset=""
+            if [ "$mode" = "desktop" ]; then preset="--preset=desktop"; fi
+            ./node_modules/.bin/lighthouse http://127.0.0.1:4321/ \
+              --quiet --chrome-flags="--headless --no-sandbox --disable-dev-shm-usage" \
+              --only-categories=performance,accessibility,best-practices,seo \
+              --output=json --output=html --output-path="quality-reports/lighthouse-$mode" \
+              $preset
+          done
+          npm run check:lighthouse-report
+      - name: Store real Lighthouse reports and audit JSON
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: p2-local-quality-${{ env.SOURCE_SHA }}
+          path: modern/quality-reports/
+          if-no-files-found: warn
+          retention-days: 14

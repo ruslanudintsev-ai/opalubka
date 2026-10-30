@@ -38,11 +38,6 @@ jobs:
         with:
           node-version: '24'
           package-manager-cache: false
-      - name: Bootstrap Lighthouse addition into integrity lock (temporary)
-        run: npm install --package-lock-only --ignore-scripts --no-audit --no-fund
-      - name: Emit updated lockfile to finalize tracked dependencies (temporary)
-        run: |
-          node -e 'const fs=require("node:fs"),s=fs.readFileSync("package-lock.json","utf8");console.log("LOCK_BEGIN");for(let i=0;i<s.length;i+=3000)console.log("LOCK_CHUNK "+(i/3000)+" "+JSON.stringify(s.slice(i,i+3000)));console.log("LOCK_END");'
       - name: Locked install
         run: npm ci --no-fund --no-audit
       - name: Build production static site

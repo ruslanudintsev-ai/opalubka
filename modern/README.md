@@ -52,6 +52,8 @@ See the original specification [Issue #2](https://github.com/ruslanudintsev-ai/o
 - [Реальные результаты проверок и ограничения](./docs/QA_EVIDENCE.md)
 - [Границы приватности, схема данных и происхождение иллюстраций](./docs/PRIVACY_AND_DATA.md)
 - [План интеграции с основным сайтом и контроль владельца](./docs/INTEGRATION_AND_RELEASE.md)
+- [Финальный чеклист выпускной готовности](./docs/RELEASE_READINESS.md)
+- [Задание независимому ревьюеру с шаблоном вердикта](./docs/INDEPENDENT_REVIEW_HANDOFF.md)
 - [Инструкции для AI-агентов](./AGENTS.md)
 - [English overview](./README.en.md)
 

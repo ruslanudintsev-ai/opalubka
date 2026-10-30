@@ -4,8 +4,10 @@
  */
 import { existsSync, readFileSync, statSync } from 'node:fs';
 import { join, resolve } from 'node:path';
+import { normalizeBasePath, resolveBuiltAsset } from './asset-paths.mjs';
 
 const dist = resolve('dist');
+const base = normalizeBasePath(process.env.DEMO_BASE_PATH || '/');
 const file = join(dist, 'index.html');
 if (!existsSync(file)) throw new Error('dist/index.html missing: run npm run build first');
 const html = readFileSync(file, 'utf8');
@@ -46,13 +48,14 @@ for (const match of html.matchAll(/<(?:script|link|img)\b[^>]*\b(?:src|href)=["'
     failures.push('unreviewed data asset: ' + source.slice(0, 24));
     continue;
   }
-  // HTML asset links are treated as paths under dist, without query fragments.
-  const pathname = source.split(/[?#]/)[0];
-  if (!pathname) continue;
-  const asset = resolve(dist, pathname.replace(/^\//, ''));
-  requireCondition(asset.startsWith(dist + '/') && existsSync(asset) && statSync(asset).isFile(),
-    'built asset missing or escaped dist: ' + source);
-  assets.push(source);
+  try {
+    const asset = resolveBuiltAsset(dist, source, base);
+    requireCondition(existsSync(asset) && statSync(asset).isFile(),
+      'built asset missing: ' + source);
+    assets.push(source);
+  } catch (error) {
+    failures.push(error.message);
+  }
 }
 requireCondition(assets.some(x => /\.js(?:[?#]|$)/.test(x)), 'JS bundle missing');
 requireCondition(assets.some(x => /\.css(?:[?#]|$)/.test(x)), 'CSS bundle missing');
@@ -62,5 +65,5 @@ if (failures.length) {
   process.exitCode = 1;
 } else {
   console.log('BUILD_INTEGRITY_PASS: single H1, semantic page, ' + internalLinks +
-    ' valid hash links, ' + assets.length + ' existing local assets, DEMO/no forms/no remote media');
+    ' valid hash links, ' + assets.length + ' existing local assets, base=' + base + ', DEMO/no forms/no remote media');
 }

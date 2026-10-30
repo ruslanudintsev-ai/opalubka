@@ -1,6 +1,6 @@
 # Architecture — Opalubka / LAB portfolio demo
 
-**Implementation location:** `modern/` in [Draft PR #5](https://github.com/ruslanudintsev-ai/opalubka/pull/5). This file documents *code that exists*, not an imaginary production architecture. Baseline `main` still has an unrelated legacy root `index.html`; no server cutover has taken place.
+**Implementation location:** `modern/`, developed in [Astro PR #5](https://github.com/ruslanudintsev-ai/opalubka/pull/5) and paired with [integration PR #6](https://github.com/ruslanudintsev-ai/opalubka/pull/6). **Historical baseline:** `main@28c1fe9fc8d1aa4817a089dff18a00941fdb39e8` on 2026-10-29 contained a legacy root `index.html`; PR #6 removes it as an integration change. That historical fact does **not** describe current `main` at all future dates. This document describes implemented architecture, **not** evidence of a published website. Confirm publication from an independently verified live URL and deployed SHA.
 
 ## System boundaries
 
@@ -18,7 +18,7 @@ flowchart TB
   CI --> E2E["Playwright Chromium/Firefox/WebKit + axe"]
   CI --> Lab["Local Lighthouse mobile/desktop"]
   CI --> Advisory["npm audit --omit=dev"]
-  Build --> Artifact["Static dist artifact (NOT deployed)"]
+  Build --> Artifact["Static dist build artifact (publication is separate)"]
 ```
 
 ### Component and module map
@@ -53,11 +53,11 @@ npm run test:e2e
 npm run preview
 ```
 
-GitHub Actions runs exactly these gates (and local Lighthouse + production npm advisory check) on the exact source SHA of the pull request; original screenshots and quality reports are attached as short-lived artifacts. Built `dist/` is **the static site root**, not `modern/` source files or the repository root. Full compiled site is available as an ephemeral CI artifact, not a hosted URL.
+GitHub Actions validates source SHA, type/build/unit/browser/a11y gates, local Lighthouse and npm advisory checks; screenshots and reports are temporary artifacts. Built `dist/` is **the expected static web root**, not `modern/` source files or the repository root. A CI artifact **does not constitute hosting**; a deployment must be confirmed separately at the live URL and exact published SHA.
 
-## Deployment decision and rollback (not executed)
+## Deployment contract and rollback (requires evidence of execution)
 
-The owner must choose a target and approve a **separate GO** before any hosting/DNS/merge action. After review, serve only the compiled `modern/dist/` contents as the static website root. Do **not** publicly serve `main/index.html` (legacy marketing content) or the raw `modern/src` files as a substitute. Before any release, record the current hosting config, publish target, baseline checksum and tested artifact SHA. Recheck live responses from a real URL after deployment. For rollback, restore the recorded previous artifact/config; do not guess at deployment credentials or IP addresses. See [INTEGRATION_AND_RELEASE.md](./INTEGRATION_AND_RELEASE.md).
+Any live hosting, DNS or merging action requires a separate owner decision. After approval, serve only compiled `modern/dist/` as the static web root. Do not serve the **historical legacy root HTML** or uncompiled `modern/src/` as the public site. Before any release, record the current hosting config, publish target, baseline checksum and tested artifact SHA. Recheck live responses from a real URL after deployment. For rollback, restore the recorded previous artifact/config; do not guess at deployment credentials or IP addresses. See [INTEGRATION_AND_RELEASE.md](./INTEGRATION_AND_RELEASE.md).
 
 ## Security and claim boundaries
 

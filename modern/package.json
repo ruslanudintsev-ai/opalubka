@@ -10,7 +10,9 @@
     "check": "astro check",
     "test": "node --experimental-strip-types --test tests/*.test.mjs",
     "test:e2e": "playwright test",
-    "check:artifact": "node scripts/check-built.mjs"
+    "check:artifact": "node scripts/check-built.mjs",
+    "check:lighthouse-report": "node scripts/check-lighthouse.mjs",
+    "check:dependencies": "node scripts/check-audit.mjs"
   },
   "dependencies": {
     "astro": "7.4.4"
@@ -19,6 +21,7 @@
     "@astrojs/check": "0.9.12",
     "typescript": "5.9.3",
     "@playwright/test": "1.64.1",
-    "@axe-core/playwright": "4.14.0"
+    "@axe-core/playwright": "4.14.0",
+    "lighthouse": "13.6.0"
   }
 }

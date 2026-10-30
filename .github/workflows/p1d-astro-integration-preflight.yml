@@ -1,0 +1,112 @@
+name: P1d Astro-only integration preflight (NO DEPLOY)
+
+on:
+  pull_request:
+    paths:
+      - index.html
+      - README.md
+      - docs/**
+      - .github/workflows/p1d-astro-integration-preflight.yml
+  workflow_dispatch:
+
+concurrency:
+  group: p1d-astro-integration-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+# Read-only: this cannot publish to GitHub Pages.
+permissions:
+  contents: read
+
+env:
+  SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+  DEMO_BASE_PATH: /opalubka/
+
+jobs:
+  pages-integration-preflight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    defaults:
+      run:
+        working-directory: modern
+    steps:
+      - name: Check out exact candidate SHA
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ env.SOURCE_SHA }}
+      - name: Confirm proposed root cutover is only the compiled Astro site
+        run: |
+          test "$(git rev-parse HEAD)" = "$SOURCE_SHA"
+          test ! -e ../index.html
+          test -s ../docs/AUDIT_BASELINE.md
+          test -s ../docs/ARCHITECTURE_DECISION.md
+          echo "INTEGRATION_ROOT_GUARD_PASS: legacy root index removed in DRAFT, P0 history retained"
+      - name: Node 24
+        uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+          package-manager-cache: false
+      - name: Install exact lockfile dependencies
+        run: npm ci --no-audit --no-fund
+      - name: Strict types and unit regressions
+        run: |
+          npm run check
+          npm test
+      - name: Build GitHub Pages project-path fixture (read-only)
+        run: |
+          npm run build
+          npm run check:artifact
+      - name: Check that emitted resources use the project prefix
+        run: |
+          node --input-type=module <<'NODE'
+          import { readFileSync, existsSync } from 'node:fs';
+          const html = readFileSync('dist/index.html','utf8');
+          const sources = [...html.matchAll(/<(?:script|link)\b[^>]*\b(?:src|href)=["']([^"']+)["']/g)].map(x=>x[1]);
+          if (!sources.includes('/opalubka/favicon.svg')) throw Error('favicon missing /opalubka/ prefix');
+          if (!sources.some(x=>x.startsWith('/opalubka/_astro/')&&x.endsWith('.js'))) throw Error('missing prefixed JS');
+          if (!sources.some(x=>x.startsWith('/opalubka/_astro/')&&x.endsWith('.css'))) throw Error('missing prefixed CSS');
+          if (!existsSync('dist/favicon.svg')) throw Error('missing original SVG');
+          console.log('GITHUB_PAGES_PROJECT_BASE_PASS: local-only /opalubka/ asset paths');
+          NODE
+      - name: Chromium static-site functional checks
+        run: |
+          npx playwright install --with-deps chromium
+          root="$RUNNER_TEMP/opalubka-pages-preflight"
+          mkdir -p "$root/opalubka"
+          cp -a dist/. "$root/opalubka/"
+          python3 -m http.server 8766 --bind 127.0.0.1 --directory "$root" > /tmp/opalubka-pages-preflight.log 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid" 2>/dev/null || true' EXIT
+          ready=0
+          for attempt in $(seq 1 25); do
+            if curl -fs -o /dev/null http://127.0.0.1:8766/opalubka/; then ready=1; break; fi
+            sleep 1
+          done
+          if [ "$ready" -ne 1 ]; then cat /tmp/opalubka-pages-preflight.log; exit 1; fi
+          npx playwright test --config playwright.subpath.config.mjs
+      - name: Stamp exact SHA in non-deployed integration artifact
+        run: |
+          {
+            echo "OPALUBKA_DRAFT_GITHUB_PAGES_PROJECT_SITE"
+            echo "SOURCE_SHA=$SOURCE_SHA"
+            echo "BASE_URL=/opalubka/"
+            echo "TARGET_ROOT=compiled_modern/dist"
+            echo "DEPLOYED=NO"
+            echo "OWNER_GO_REQUIRED=YES"
+          } > dist/INTEGRATION_PROVENANCE.txt
+      - name: Upload proof of build, not publish it
+        uses: actions/upload-artifact@v6
+        with:
+          name: opalubka-pages-project-draft-${{ env.SOURCE_SHA }}
+          path: modern/dist/
+          retention-days: 14
+          if-no-files-found: error
+      - name: Upload browser trace/report
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: opalubka-pages-project-qa-${{ env.SOURCE_SHA }}
+          path: |
+            modern/playwright-subpath-report/
+            modern/test-results/subpath/
+          retention-days: 14
+          if-no-files-found: warn

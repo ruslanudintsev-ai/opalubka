@@ -41,12 +41,13 @@ Area: 0.01–10,000 m², max two decimals. Billing periods: integer 1–12; 1 pe
 
 ## QA and integration caveats
 
-A passing TypeScript/build/unit CI only proves the **isolated preview** builds and its pure module behaves as tested; it does not prove the legacy main page was migrated, nor verify real keyboard/screen reader, screenshots, WebKit/Firefox, 320/360/390/768/1440, Lighthouse, or licensed third-party assets. This directory includes only self-authored SVG/CSS illustration. Playwright automated axe checks do **not** replace manual screen-reader QA, human screenshot inspection, Lighthouse or high-fidelity cross-device performance testing. Successful browser tests do not imply a real business or live deployment. No deployment/merge without separate owner GO.
+**Последние автоматические проверки:** точные значения и URL нужно смотреть в [GitHub Actions у текущего SHA](https://github.com/ruslanudintsev-ai/opalubka/pull/5/checks). В исходных запусках на 30.10.2026 успешно выполнялись Node unit, Astro strict check/build, Playwright в Chromium/Firefox/WebKit, axe, реальные скриншоты пяти разрешений и Lighthouse mobile/desktop на **локальном preview**. Обновление исходников требует **нового успешного прогона**. Проверки не означают готовность реального бизнеса или работу сайта на публичном адресе. **Не проверены вручную:** VoiceOver/NVDA, реальные мобильные устройства, field CWV/CrUX, настройки продакшен-хостинга. Независимая приёмка пока не оформлена. Актуальный выпускной пакет `modern/dist/` сохраняется в GitHub Actions как недеплоенный artifact. Никаких merge/deploy без отдельного решения владельца.
 
 See the original specification [Issue #2](https://github.com/ruslanudintsev-ai/opalubka/issues/2) and independent P1a [Draft PR #4](https://github.com/ruslanudintsev-ai/opalubka/pull/4). Do not merge them automatically; the migration/integration decision belongs to the owner.
 
 ## Документация и решения перед выпуском
 
+- [Архитектура и границы компонентов](./docs/ARCHITECTURE.md)
 - [DEMO: пошаговая демонстрация для ревьюера](./docs/DEMO.md)
 - [Реальные результаты проверок и ограничения](./docs/QA_EVIDENCE.md)
 - [Границы приватности, схема данных и происхождение иллюстраций](./docs/PRIVACY_AND_DATA.md)

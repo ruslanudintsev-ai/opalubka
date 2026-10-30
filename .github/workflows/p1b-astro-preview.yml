@@ -46,10 +46,8 @@ jobs:
         run: npm test
       - name: Build static output
         run: npm run build
-      - name: Validate built static page
-        run: |
-          test -s dist/index.html
-          node -e 'const fs=require("node:fs");const s=fs.readFileSync("dist/index.html","utf8");if(!s.includes("DEMO")||s.includes("Заявка отправлена")||s.includes("image.qwenlm.ai"))process.exit(1);'
+      - name: Audit built assets, fragments and honest demo content
+        run: npm run check:artifact
       - name: Install browser engines and OS libraries
         run: npx playwright install --with-deps chromium firefox webkit
       - name: Real browser, viewport, download and axe tests

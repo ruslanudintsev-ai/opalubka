@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { calculateQuote } from '../src/domain/quote.ts';
 import { equipment, categories } from '../src/data/catalog.ts';
+import { formatDemoEstimate } from '../src/domain/estimate.ts';
 
 test('fixtures: unique IDs, 3+ actual categories, no external media', () => {
   assert.equal(equipment.length, 5);
@@ -71,4 +72,20 @@ test('input object stays unchanged and there are no external effects', () => {
   const second = calculateQuote(input);
   assert.deepEqual(first,second);
   assert.equal(input.areaM2,'45.5');
+});
+
+test('demo estimate is deterministic, human-readable and PII-free', () => {
+  const r = calculateQuote({ equipmentId: 'wall', areaM2: 500, billingPeriods: 3 });
+  assert.equal(r.ok, true);
+  if (!r.ok) return;
+  const text = formatDemoEstimate(r.quote);
+  assert.equal(text, formatDemoEstimate(r.quote));
+  assert.match(text, /DEMO \/ ДЕМОНСТРАЦИОННЫЙ РАСЧЁТ/);
+  assert.match(text, /НЕ КОММЕРЧЕСКАЯ ОФЕРТА/);
+  assert.match(text, /3 645 000|3\u00a0645\u00a0000|3\u202f645\u202f000/);
+  assert.match(text, /90 ₽ \/ м² \/ сутки/);
+  assert.match(text, /Никакие персональные данные не собирались/);
+  assert.doesNotMatch(text, /имя клиента|телефон|электронный адрес|к оплате/i);
+  assert.doesNotMatch(text, /mailto:|tel:|@example/i);
+  assert.equal(text.includes('2026-'), false, 'no volatile timestamp');
 });

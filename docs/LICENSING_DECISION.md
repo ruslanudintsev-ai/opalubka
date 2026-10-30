@@ -1,28 +1,28 @@
-# Licensing decision — proposal for owner approval
+# Licensing decision — MIT approved (2026)
 
-**Proposed choice:** **MIT License** for project-owned `modern/` application code, docs authored for the project, and original source SVG diagrams. This is suitable for a public technical portfolio: attribution and license inclusion required; code remains readable and reusable; no claim of commercial warranty. It does **not** mean this repository already grants MIT permission. **The owner/rightsholder must explicitly approve the choice before adding a `LICENSE` file or merging it.**
+**Decision: APPROVED by repository owner on 2026-10-30.** The approved license is **MIT**, with standard full text in [../LICENSE](../LICENSE) and `Copyright (c) 2026 Ruslan Udintsev` (GitHub account `ruslanudintsev-ai`). This is an owner decision for the **integration Draft PR #6**, **not** a merge or public-hosting authorization.
 
-## Why MIT is recommended
+The project is a fictional formwork-rental demo and professional example of AI-assisted engineering. MIT permits reading, copying, modifying, distributing and commercial reuse **subject to preserving the license and copyright notice**. It includes an explicit warranty disclaimer.
 
-- Recognizable, permissive and easy for recruiters/developers to understand.
-- Consistent with the project intent: an auditable source showcase of an Astro+TS demo, not a protected proprietary rental service or product data.
-- No need to create a separate CC BY license for simple original SVG diagrams if the owner elects MIT to cover the entire new project. If the owner wants separate art rights, alternative is **MIT for code, CC BY 4.0 for original illustrations**, with a precise file-level boundary.
+## Licensed content / scope
 
-## What must not be unintentionally licensed
+MIT is intended to cover the **owner-controlled project source and associated documentation**, including the Astro/TypeScript application, custom CSS and original schematic SVG paths (five equipment illustrations, hero drawing, favicon). Project-authored test code, workflows and the historical P0 audit documents are included **to the extent the owner holds the necessary rights**.
 
-- **Legacy root `index.html`** contains unverified remote imagery and unsupported claims; in this integration branch it is **deleted**, not relicensed.
-- Dependencies such as Astro, TypeScript, Playwright, axe, Lighthouse have upstream licenses; include their own notices and do not state they were authored by the repository owner.
-- Third-party logos, content snippets, images, UI kits, proprietary data, Github branding, or other material not proven owned may **not** be covered by a project-level license merely because they appear in a repository.
-- Significant AI-generated source contributions were used under human operator direction; the README describes that honestly. This is not legal proof of ownership or copyright originality.
+See [RIGHTS_AND_ASSET_AUDIT.md](./RIGHTS_AND_ASSET_AUDIT.md) for the file inventory, media provenance, and limitations of this check.
 
-## Approval checklist
+## Materials not relicensed by our MIT notice
 
-- [ ] Owner explicitly accepts **MIT** (or names a different license).
-- [ ] Verify any copied third-party source/assets, legal rights and attribution before publishing a root `LICENSE`.
-- [ ] Ensure scope is clearly marked and no deleted legacy external assets are included in the distribution.
-- [ ] Add `LICENSE` with a correct copyright holder/year only after the owner's choice; do not invent a company or legal identity.
-- [ ] Re-run source/build/tests and reviewer approval at the new SHA.
+- **Installed npm dependencies** (Astro, TypeScript, Playwright, axe, Lighthouse and transitive packages) retain their respective third-party license terms, notices and rights. The repo commits `package-lock.json` as a dependency manifest, not `node_modules/` or copies of third-party package sources.
+- Trademarks, external web URLs and referenced third-party pages do not become project-owned merely by being referenced in README or historical docs.
+- Legacy `main/index.html`, which contains unverified external image hotlinks, is **deleted in this Draft PR #6 only**. Do not include or publish that file as part of the new MIT-licensed release. `main` stays unchanged until explicit merge authorization.
+- Any later photo, font, vendor schematic, logo, code snippet or other external material with unknown permissions must be excluded until independently licensed/attributed.
 
-Until then, the public repository being readable does not by itself grant blanket reuse rights. This document **is not** a legal opinion.
+## What was verified, and what was not
 
-**Status: OWNER_LICENSE_DECISION_REQUIRED; NO LICENSE FILE CREATED.**
+**Checked:** recursive tracked repository tree, original SVG paths and inline drawings, sole favicon in `modern/public/`, CSS and page references, README/docs provenance, and the separate npm lockfile dependency boundary. No vendor photos, remote font packages, stock imagery or binary source assets were found in the new Astro candidate. This finding is reinforced by a read-only CI rights/asset guard.
+
+**Not a legal determination:** AI-assisted code and documentation may have copyright uncertainty under applicable law. GitHub repository ownership, tool-generated content and this source audit alone cannot prove exclusive copyright or eliminate all third-party code similarity. The owner authorizes MIT distribution **only over rights they control**.
+
+**Version boundary:** the `LICENSE` is committed to stacked Draft PR #6, which remains based on unmerged Astro PR #5. Neither LICENSE nor root HTML deletion is currently in `main`; final review and the owner's separate merge/deploy GO are still required.
+
+**Status:** `OWNER_MIT_LICENSE_APPROVED / SOURCE_RIGHTS_BOUNDARY_CHECKED / NO_MERGE / NO_DEPLOY`.

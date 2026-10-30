@@ -13,7 +13,7 @@ permissions:
 jobs:
   preview:
     runs-on: ubuntu-latest
-    timeout-minutes: 12
+    timeout-minutes: 25
     defaults:
       run:
         working-directory: modern
@@ -25,6 +25,11 @@ jobs:
         with:
           node-version: '24'
           package-manager-cache: false
+      - name: Bootstrap updated browser QA lock (temporary)
+        run: npm install --package-lock-only --ignore-scripts --no-audit --no-fund
+      - name: Emit npm-generated lock to finalize committed dependencies (temporary)
+        run: |
+          node -e 'const fs=require("node:fs"),s=fs.readFileSync("package-lock.json","utf8");console.log("LOCK_BEGIN");for(let i=0;i<s.length;i+=3000)console.log("LOCK_CHUNK "+(i/3000)+" "+JSON.stringify(s.slice(i,i+3000)));console.log("LOCK_END");'
       - name: Install reproducibly
         run: npm ci --no-audit --no-fund
       - name: Typecheck Astro and TypeScript
@@ -37,3 +42,17 @@ jobs:
         run: |
           test -s dist/index.html
           node -e 'const fs=require("node:fs");const s=fs.readFileSync("dist/index.html","utf8");if(!s.includes("DEMO")||s.includes("Заявка отправлена")||s.includes("image.qwenlm.ai"))process.exit(1);'
+      - name: Install browser engines and OS libraries
+        run: npx playwright install --with-deps chromium firefox webkit
+      - name: Real browser, viewport, download and axe tests
+        run: npm run test:e2e
+      - name: Save actual screenshot, trace and HTML QA evidence
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: p1c-browser-evidence-${{ github.sha }}
+          path: |
+            modern/test-results/
+            modern/playwright-report/
+          if-no-files-found: warn
+          retention-days: 14

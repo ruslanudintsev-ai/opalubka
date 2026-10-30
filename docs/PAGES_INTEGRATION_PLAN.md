@@ -37,7 +37,7 @@ The **P1d integration preflight** reproduces these commands at exact source SHA 
 
 - [Historical risks and SHA-specific baseline](./AUDIT_BASELINE.md) and [P0 architectural decision](./ARCHITECTURE_DECISION.md) are preserved verbatim from Draft PR #3. They describe **2026-10-29 legacy baseline**, not current Astro source status.
 - [Current implemented architecture](../modern/docs/ARCHITECTURE.md), [actual QA evidence](../modern/docs/QA_EVIDENCE.md), [manual/reviewer gaps](../modern/docs/RELEASE_READINESS.md) retain their own scope.
-- [Licensing proposal](./LICENSING_DECISION.md) should be approved before merge/public distribution.
+- **MIT is now approved** by the owner for project-controlled code/docs/original SVG, with [standard LICENSE](../LICENSE) and [rights/asset audit](./RIGHTS_AND_ASSET_AUDIT.md). Third-party dependencies retain their licenses. Publication still requires a separate owner GO.
 
 ## References
 

@@ -71,6 +71,28 @@ jobs:
           fi
           npm run test:e2e
 
+      - name: Confirm dist works under plain static HTTP hosting
+        run: |
+          python3 -m http.server 8765 --bind 127.0.0.1 --directory dist > /tmp/opalubka-static-http.log 2>&1 &
+          static_pid=$!
+          trap 'kill "$static_pid" 2>/dev/null || true' EXIT
+          ready=0
+          for attempt in $(seq 1 15); do
+            if curl -fs -o /dev/null http://127.0.0.1:8765/; then
+              ready=1
+              break
+            fi
+            sleep 1
+          done
+          if [ "$ready" -ne 1 ]; then
+            cat /tmp/opalubka-static-http.log
+            exit 1
+          fi
+          curl -fsS http://127.0.0.1:8765/ -o /tmp/opalubka-static-index.html
+          cmp dist/index.html /tmp/opalubka-static-index.html
+          curl -fsS http://127.0.0.1:8765/favicon.svg -o /tmp/opalubka-static-favicon.svg
+          cmp dist/favicon.svg /tmp/opalubka-static-favicon.svg
+          echo "PLAIN_STATIC_HTTP_PASS: exact built index and original local favicon"
       - name: Stamp reproducible static release candidate
         run: |
           test -s dist/index.html

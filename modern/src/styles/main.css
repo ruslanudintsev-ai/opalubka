@@ -12,3 +12,18 @@
 @media(max-width:1000px){.hero{grid-template-columns:1fr;min-height:0;padding-block:70px}.hero-art{max-width:630px;width:100%;margin-inline:auto;aspect-ratio:1.4}.blueprint{height:100%}.equipment-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.header-inner{min-height:72px}.section{padding-block:70px}}
 @media(max-width:700px){.container{width:min(100% - 30px,var(--container))}.header-inner{flex-wrap:wrap;gap:14px;padding-block:16px}.site-header nav{order:3;width:100%;justify-content:space-between}.site-header nav a{font-size:.78rem}.header-link{padding:7px 9px;font-size:.78rem}.wordmark{font-size:.9rem}.hero{padding-block:55px}.hero h1{font-size:clamp(2.5rem,11vw,4rem)}.hero-lede{font-size:1rem}.hero-proof{font-size:.67rem}.hero-art{aspect-ratio:1.1}.notice-inner{display:block}.notice-inner p{margin-top:8px}.section-head,.about-grid{display:block}.section-head>p{max-width:100%}.equipment-grid{grid-template-columns:1fr}.calculator-layout{grid-template-columns:1fr}.input-columns{grid-template-columns:1fr;gap:0}.filters{gap:8px}.filter-button{font-size:.77rem;padding:9px 12px}.filter-count{width:100%;text-align:left}.footer-inner{min-height:0;flex-wrap:wrap;padding-block:25px}.section{padding-block:60px}.result-panel output{font-size:clamp(2.2rem,9vw,3.3rem)}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
+
+.download-button{border:2px solid #09121b;background:#09121b;color:#f2f2e9;font-size:.83rem;font-weight:800;letter-spacing:.015em;padding:13px 17px;border-radius:3px;align-self:flex-start;margin-block:2px 18px}
+.download-button:hover:not(:disabled){background:#20343f}
+.download-button:disabled{opacity:.45;cursor:not-allowed}
+@media print{
+  body{background:white;color:black}
+  .site-header,.hero,.notice-block,.catalog-section,.about-section,.site-footer,.controls-panel,.download-button,.skip-link{display:none!important}
+  .calculator-section{background:white;color:black;border:0;padding:0}
+  .calculator-section .section-index,.calculator-section .section-head{display:block;color:black}
+  .calculator-layout{display:block;border:0}
+  .result-panel{display:block;background:white;color:black;padding:0;border:0}
+  #total{color:black;font-size:2rem}
+  .result-foot{color:black}
+  .result-panel::after{content:"DEMO / НЕ КОММЕРЧЕСКАЯ ОФЕРТА. Без персональных данных.";display:block;font-weight:700;margin-top:16px}
+}

@@ -4,6 +4,7 @@ import { defineConfig, devices } from '@playwright/test';
 // No hosted URL or deployment is involved.
 export default defineConfig({
   testDir: './tests/subpath',
+  outputDir: './test-results/subpath', // keep the five original Chromium screenshots from the main Playwright run
   timeout: 45000,
   workers: 1,
   retries: 0,

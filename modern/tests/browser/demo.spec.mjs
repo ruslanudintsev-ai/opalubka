@@ -49,7 +49,7 @@ test('catalog keyboard activation, filters and quote selection', async ({ page }
   await expect(page.getByRole('button', { name: 'Перекрытия' })).toHaveAttribute('aria-pressed', 'true');
   await page.getByRole('button', { name: 'Все решения' }).click();
   await expect(cards).toHaveCount(5);
-  const choose = page.getByRole('button', { name: 'Рассчитать демо: Колонная' });
+  const choose = page.getByRole('button', { name: 'Выбрать Колонная для демо-расчёта' });
   await choose.focus();
   await page.keyboard.press('Enter');
   await expect(page.locator('#equipment')).toHaveValue('column');

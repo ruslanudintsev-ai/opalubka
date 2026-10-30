@@ -6,6 +6,9 @@ on:
       - index.html
       - README.md
       - docs/**
+      - LICENSE
+      - scripts/**
+      - modern/**
       - .github/workflows/p1d-astro-integration-preflight.yml
   workflow_dispatch:
 
@@ -51,6 +54,8 @@ jobs:
         run: |
           npm run check
           npm test
+      - name: Verify MIT owner notice and asset rights boundary
+        run: node ../scripts/check-license-boundary.mjs
       - name: Build GitHub Pages project-path fixture (read-only)
         run: |
           npm run build
@@ -83,6 +88,12 @@ jobs:
           done
           if [ "$ready" -ne 1 ]; then cat /tmp/opalubka-pages-preflight.log; exit 1; fi
           npx playwright test --config playwright.subpath.config.mjs
+      - name: Include MIT license in compiled static artifact
+        run: |
+          cp ../LICENSE dist/LICENSE.txt
+          cmp ../LICENSE dist/LICENSE.txt
+          test -s dist/LICENSE.txt
+          echo "MIT_RELEASE_NOTICE_PASS: compiled artifact includes standard LICENSE.txt"
       - name: Stamp exact SHA in non-deployed integration artifact
         run: |
           {

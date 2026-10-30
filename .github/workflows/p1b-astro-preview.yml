@@ -79,7 +79,7 @@ jobs:
             echo "OPALUBKA_STATIC_DEMO_RELEASE_CANDIDATE"
             echo "SOURCE_SHA=$SOURCE_SHA"
             echo "SITE_ROOT=dist/"
-            echo "TYPE=fictional-portolio-demo"
+            echo "TYPE=fictional-portfolio-demo"
             echo "NOT_PUBLISHED=YES"
             echo "NO_REAL_ORDERS=YES"
             echo "PUBLISH_ONLY_AFTER_OWNER_GO=YES"

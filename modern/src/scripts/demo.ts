@@ -1,4 +1,5 @@
-import { calculateQuote } from '../domain/quote.ts';
+import { calculateQuote, type DemoQuote } from '../domain/quote.ts';
+import { formatDemoEstimate } from '../domain/estimate.ts';
 
 const equipmentSelect = document.querySelector<HTMLSelectElement>('#equipment');
 const areaInput = document.querySelector<HTMLInputElement>('#area');
@@ -6,6 +7,7 @@ const periodInput = document.querySelector<HTMLInputElement>('#periods');
 const total = document.querySelector<HTMLOutputElement>('#total');
 const breakdown = document.querySelector<HTMLElement>('#breakdown');
 const error = document.querySelector<HTMLElement>('#quote-error');
+const downloadButton = document.querySelector<HTMLButtonElement>('#download-estimate');
 const calculator = document.querySelector<HTMLElement>('#calculator');
 const count = document.querySelector<HTMLElement>('#catalog-count');
 const filters = [...document.querySelectorAll<HTMLButtonElement>('[data-filter]')];
@@ -15,7 +17,8 @@ const chooserButtons = [...document.querySelectorAll<HTMLButtonElement>('[data-s
 const formatter = new Intl.NumberFormat('ru-RU', { maximumFractionDigits: 0 });
 const moveBehavior: ScrollBehavior = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth';
 
-if (equipmentSelect && areaInput && periodInput && total && breakdown && error) {
+if (equipmentSelect && areaInput && periodInput && total && breakdown && error && downloadButton) {
+  let currentQuote: DemoQuote | null = null;
   const update = () => {
     const result = calculateQuote({
       equipmentId: equipmentSelect.value,
@@ -24,6 +27,8 @@ if (equipmentSelect && areaInput && periodInput && total && breakdown && error) 
     });
     areaInput.setAttribute('aria-invalid', String(!result.ok && result.errors.some(message => message.startsWith('Площадь:'))));
     periodInput.setAttribute('aria-invalid', String(!result.ok && result.errors.some(message => message.startsWith('Срок:'))));
+    currentQuote = result.ok ? result.quote : null;
+    downloadButton.disabled = !result.ok;
     if (!result.ok) {
       total.textContent = '—';
       breakdown.textContent = 'Расчёт не выполнен.';
@@ -42,6 +47,21 @@ if (equipmentSelect && areaInput && periodInput && total && breakdown && error) 
   areaInput.addEventListener('input', update);
   periodInput.addEventListener('input', update);
   update();
+
+  downloadButton.addEventListener('click', () => {
+    if (!currentQuote) return;
+    const contents = formatDemoEstimate(currentQuote);
+    const blob = new Blob(['\uFEFF', contents], { type: 'text/plain;charset=utf-8' });
+    const temporaryUrl = URL.createObjectURL(blob);
+    const anchor = document.createElement('a');
+    anchor.href = temporaryUrl;
+    anchor.download = 'opalubka-demo-smeta.txt';
+    anchor.hidden = true;
+    document.body.appendChild(anchor);
+    anchor.click();
+    anchor.remove();
+    window.setTimeout(() => URL.revokeObjectURL(temporaryUrl), 1000);
+  });
 
   chooserButtons.forEach(button => {
     button.addEventListener('click', () => {

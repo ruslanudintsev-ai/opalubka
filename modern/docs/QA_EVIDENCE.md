@@ -33,7 +33,7 @@ The implementing agent visually inspected historical screenshots from the exact 
 
 ## Remaining release-blocking and non-blocking gaps
 
-**BLOCKED:** 
+**BLOCKED:**
 - Independent review of **current** PR #5 head, with source-backed GitHub review comment and decision. [Reviewer task template](./INDEPENDENT_REVIEW_HANDOFF.md).
 - Owner's explicit choice to use the Astro build instead of conflicting P1a Draft PR #4, and separate GO for merging/public hosting/cutover.
 - If publishing: verify host/root path really serves **only compiled `dist`**, not the old root `index.html`; record rollback and live QA.

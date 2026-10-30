@@ -15,7 +15,8 @@
 - [План интеграции и rollback](./modern/docs/INTEGRATION_AND_RELEASE.md).
 - [Исторический аудит P0](./docs/AUDIT_BASELINE.md) и [архитектурное решение P0](./docs/ARCHITECTURE_DECISION.md) — импортированы без потери исходных доказательств из Draft PR #3.
 - [Проверяемый путь к GitHub Pages](./docs/PAGES_INTEGRATION_PLAN.md) — **план, не деплой**.
-- [Предложение по лицензированию](./docs/LICENSING_DECISION.md) — требует окончательного согласия правообладателя.
+- [Лицензия MIT (утверждена)](./LICENSE) — © 2026 Ruslan Udintsev, для принадлежащих владельцу кода, документации и оригинальных SVG.
+- [Решение о лицензии](./docs/LICENSING_DECISION.md) и [аудит прав на код/медиа](./docs/RIGHTS_AND_ASSET_AUDIT.md) — сторонние зависимости сохраняют свои лицензии; старый HTML исключён из интеграционной ветки.
 - [Задание на независимую приёмку](./modern/docs/INDEPENDENT_REVIEW_HANDOFF.md) — обязательная внешняя проверка точного SHA, не самопроверка.
 
 Для локального запуска нужен Node.js 24:

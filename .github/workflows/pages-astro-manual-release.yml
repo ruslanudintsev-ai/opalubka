@@ -38,6 +38,7 @@ jobs:
       DEMO_BASE_PATH: /opalubka/
     steps:
       - name: Verify exact author-approved main SHA
+        working-directory: .
         run: |
           [[ "$EXPECTED_SHA" =~ ^[a-f0-9]{40}$ ]] || { echo "Expected exact SHA"; exit 1; }
           test "$SOURCE_SHA" = "$EXPECTED_SHA"

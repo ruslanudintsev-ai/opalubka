@@ -27,3 +27,19 @@
   .result-foot{color:black}
   .result-panel::after{content:"DEMO / НЕ КОММЕРЧЕСКАЯ ОФЕРТА. Без персональных данных.";display:block;font-weight:700;margin-top:16px}
 }
+
+/* P2 mobile readability: secondary type stays legible without enlarging columns. */
+@media(max-width:700px){
+  .eyebrow,.section-index{font-size:.8rem;letter-spacing:.1em;line-height:1.65}
+  .hero-proof{font-size:.78rem;line-height:1.65;gap:9px 18px}
+  .art-caption,.art-bottom{font-size:.69rem;letter-spacing:.055em;gap:6px}
+  .equipment-kicker{font-size:.8rem;line-height:1.65}
+  .equipment-rate span{font-size:.78rem}
+  .visual-counter,.visual-label{font-size:.73rem;letter-spacing:.055em}
+  .filter-button,.header-link{font-size:.83rem}
+  .site-header nav a{font-size:.84rem}
+  .policy,.privacy-text,.footer-inner span,.footer-inner a{font-size:.86rem}
+  .result-top,.result-foot{font-size:.78rem;letter-spacing:.055em}
+  .equipment-body p{font-size:.92rem;min-height:0}
+  .select-button{font-size:.84rem;min-height:44px}
+}

@@ -33,7 +33,7 @@ test('responsive: 320/360/390/768/1440, real screenshots and no horizontal overf
       viewportWidth: document.documentElement.clientWidth,
     }));
     expect(overflow.scrollWidth, 'horizontal overflow at ' + width).toBeLessThanOrEqual(overflow.viewportWidth + 1);
-    const sha = (process.env.GITHUB_SHA ?? 'local').slice(0, 12);
+    const sha = (process.env.SOURCE_SHA ?? process.env.GITHUB_SHA ?? 'local').slice(0, 12);
     await page.screenshot({ path: path.join(dir, sha + '-chromium-' + width + '.png'), fullPage: true, animations: 'disabled' });
   }
   expect(issues).toEqual([]);

@@ -13,6 +13,7 @@
 - [Фактические QA-доказательства](./modern/docs/QA_EVIDENCE.md).
 - [Приватность и происхождение данных/медиа](./modern/docs/PRIVACY_AND_DATA.md).
 - [План интеграции и rollback](./modern/docs/INTEGRATION_AND_RELEASE.md).
+- [Задание на независимую приёмку](./modern/docs/INDEPENDENT_REVIEW_HANDOFF.md) — обязательная внешняя проверка точного SHA, не самопроверка.
 
 Для локального запуска нужен Node.js 24:
 

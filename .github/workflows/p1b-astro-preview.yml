@@ -142,6 +142,15 @@ jobs:
           npx playwright test --config playwright.subpath.config.mjs
           echo "NESTED_STATIC_HOSTING_PASS: /opalubka/ with exact CSS/JS/favicon and calculator"
 
+      - name: Assert five real Chromium screenshots survive nested QA
+        run: |
+          test -d test-results/screenshots
+          image_count=$(find test-results/screenshots -maxdepth 1 -type f -name "*-chromium-*.png" | wc -l)
+          test "$image_count" -eq 5
+          for width in 320 360 390 768 1440; do
+            test -s "test-results/screenshots/${SOURCE_SHA:0:12}-chromium-$width.png"
+          done
+          echo "CHROMIUM_VISUAL_EVIDENCE_PASS: exactly 5 actual full-page screenshots on $SOURCE_SHA"
       - name: Save nested-path browser evidence
         if: always()
         uses: actions/upload-artifact@v6

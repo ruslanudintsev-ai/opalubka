@@ -115,6 +115,44 @@ jobs:
           if-no-files-found: error
           retention-days: 14
 
+      - name: Integration test a real nested static site under /opalubka/
+        env:
+          DEMO_BASE_PATH: /opalubka/
+        run: |
+          npm run build
+          npm run check:artifact
+          root="$RUNNER_TEMP/opalubka-subpath-fixture"
+          mkdir -p "$root/opalubka"
+          cp -a dist/. "$root/opalubka/"
+          python3 -m http.server 8766 --bind 127.0.0.1 --directory "$root" > /tmp/opalubka-subpath-http.log 2>&1 &
+          static_pid=$!
+          trap 'kill "$static_pid" 2>/dev/null || true' EXIT
+          ready=0
+          for attempt in $(seq 1 20); do
+            if curl -fs -o /dev/null http://127.0.0.1:8766/opalubka/; then
+              ready=1
+              break
+            fi
+            sleep 1
+          done
+          if [ "$ready" -ne 1 ]; then
+            cat /tmp/opalubka-subpath-http.log
+            exit 1
+          fi
+          npx playwright test --config playwright.subpath.config.mjs
+          echo "NESTED_STATIC_HOSTING_PASS: /opalubka/ with exact CSS/JS/favicon and calculator"
+
+      - name: Save nested-path browser evidence
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: nested-static-qa-${{ env.SOURCE_SHA }}
+          path: |
+            modern/playwright-subpath-report/
+            modern/test-results/
+          if-no-files-found: warn
+          retention-days: 14
+
       - name: Save actual screenshot, trace and HTML QA evidence
         if: always()
         uses: actions/upload-artifact@v6
@@ -125,3 +163,39 @@ jobs:
             modern/playwright-report/
           if-no-files-found: warn
           retention-days: 14
+
+  windows-path-regression:
+    runs-on: windows-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: modern
+    steps:
+      - name: Checkout exact PR head on Windows
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ env.SOURCE_SHA }}
+      - name: Assert exact Windows SHA
+        shell: pwsh
+        run: |
+          if ((git rev-parse HEAD) -ne "$env:SOURCE_SHA") { throw "Windows SHA mismatch" }
+          Write-Output "WINDOWS_SOURCE_SHA=$env:SOURCE_SHA"
+      - name: Set up Node 24 on Windows
+        uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+          package-manager-cache: false
+      - name: Install locked dependencies
+        run: npm ci --no-audit --no-fund
+      - name: Windows path regression tests
+        run: npm test
+      - name: Windows root static build and guard
+        run: |
+          npm run build
+          npm run check:artifact
+      - name: Windows nested-path build and guard
+        env:
+          DEMO_BASE_PATH: /opalubka/
+        run: |
+          npm run build
+          npm run check:artifact

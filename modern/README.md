@@ -9,6 +9,8 @@
 - `src/domain/quote.ts`: pure `calculateQuote()` input validation, arithmetic and exclusions.
 - `src/scripts/demo.ts`: progressive browser enhancement for category filters and quotes; no network requests or storage.
 - `src/styles/main.css`: responsive visuals with original CSS/SVG drawings, no remote image/font dependencies.
+- Deterministic client-only `.txt` demo estimate via `src/domain/estimate.ts`; download is disabled for invalid quotes, does not use network or collect PII.
+- Real-browser Playwright checks at 320/360/390/768/1440, axe WCAG 2.1 A/AA and UI/download smoke across Chromium, Firefox and WebKit. Screenshots/HTML report are GitHub Actions artifacts tied to the exact source SHA.
 - Zero React hydration and no API/analytics by design.
 
 ## Local setup
@@ -21,6 +23,8 @@ npm ci
 npm run check
 npm test
 npm run build
+npx playwright install chromium firefox webkit
+npm run test:e2e
 npm run dev
 ```
 
@@ -34,6 +38,6 @@ Area: 0.01–10,000 m², max two decimals. Billing periods: integer 1–12; 1 pe
 
 ## QA and integration caveats
 
-A passing TypeScript/build/unit CI only proves the **isolated preview** builds and its pure module behaves as tested; it does not prove the legacy main page was migrated, nor verify real keyboard/screen reader, screenshots, WebKit/Firefox, 320/360/390/768/1440, Lighthouse, or licensed third-party assets. This directory includes only self-authored SVG/CSS illustration. No deployment/merge without separate owner GO.
+A passing TypeScript/build/unit CI only proves the **isolated preview** builds and its pure module behaves as tested; it does not prove the legacy main page was migrated, nor verify real keyboard/screen reader, screenshots, WebKit/Firefox, 320/360/390/768/1440, Lighthouse, or licensed third-party assets. This directory includes only self-authored SVG/CSS illustration. Playwright automated axe checks do **not** replace manual screen-reader QA, human screenshot inspection, Lighthouse or high-fidelity cross-device performance testing. Successful browser tests do not imply a real business or live deployment. No deployment/merge without separate owner GO.
 
 See the original specification [Issue #2](https://github.com/ruslanudintsev-ai/opalubka/issues/2) and independent P1a [Draft PR #4](https://github.com/ruslanudintsev-ai/opalubka/pull/4). Do not merge them automatically; the migration/integration decision belongs to the owner.

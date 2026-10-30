@@ -1,16 +1,17 @@
 ---
 import type { Equipment } from '../data/catalog.ts';
+import { illustrationPaths } from '../data/illustrations.ts';
 interface Props { item: Equipment; index: number }
 const { item, index } = Astro.props;
 ---
 <article class="equipment-card" data-equipment-category={item.category}>
   <div class="equipment-visual" aria-hidden="true">
     <div class="tech-grid"></div>
-    <svg viewBox="0 0 300 185" class="tech-drawing" fill="none" aria-hidden="true">
-      <path d="M75 140 L75 47 L164 25 L229 58 L229 150 L143 173 Z" stroke="currentColor" stroke-width="3" />
-      <path d="M75 47 L143 80 L229 58 M143 80 V173 M164 25 V119 M75 92 L143 124 L229 103 M108 63 V155 M196 42 V161" stroke="currentColor" stroke-width="2" opacity=".7"/>
-      <path d="M75 140 L143 173 L229 150" stroke="currentColor" stroke-width="2" opacity=".6"/>
-      <circle cx="143" cy="80" r="4" fill="currentColor" />
+    <svg viewBox="0 0 300 185" class="tech-drawing" fill="none" aria-hidden="true" data-illustration={item.id}>
+      {illustrationPaths[item.id].map((d, layer) => (
+        <path d={d} stroke="currentColor" stroke-width={layer === 0 ? 3 : 2}
+              stroke-linecap="round" stroke-linejoin="round" opacity={layer === 0 ? 1 : 0.72} />
+      ))}
     </svg>
     <span class="visual-counter">0{index + 1} / 05</span>
     <span class="visual-label">SCHEMATIC / DEMO</span>

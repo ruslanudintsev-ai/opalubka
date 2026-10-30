@@ -1,0 +1,129 @@
+# TEMPLATE ONLY — STORED UNDER docs/templates/, NOT UNDER .github/workflows/.
+# Owner must explicitly authorize live GitHub Pages deployment before activation.
+# When authorized: review/refreeze this file, COPY into .github/workflows/ and
+# set Settings > Pages > Build and deployment > Source = GitHub Actions.
+# Inert in this location: cannot be executed by GitHub Actions.
+name: Opalubka / manually approved Astro Pages release
+on:
+  workflow_dispatch:
+    inputs:
+      expected_sha:
+        description: "The reviewed exact main commit SHA to publish (40 hex characters)"
+        required: true
+        type: string
+      release_confirmation:
+        description: "Explicitly authorize publishing Astro to existing GitHub Pages"
+        required: true
+        type: choice
+        options:
+          - DO_NOT_PUBLISH
+          - AUTHORIZE_ASTRO_PUBLISH
+
+concurrency:
+  group: opalubka-pages-manual-deploy
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    if: ${{ github.ref == 'refs/heads/main' && inputs.release_confirmation == 'AUTHORIZE_ASTRO_PUBLISH' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: modern
+    env:
+      SOURCE_SHA: ${{ github.sha }}
+      EXPECTED_SHA: ${{ inputs.expected_sha }}
+      DEMO_BASE_PATH: /opalubka/
+    steps:
+      - name: Verify exact author-approved main SHA
+        run: |
+          [[ "$EXPECTED_SHA" =~ ^[a-f0-9]{40}$ ]] || { echo "Expected exact SHA"; exit 1; }
+          test "$SOURCE_SHA" = "$EXPECTED_SHA"
+      - name: Checkout the exact authorized main SHA
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Verify provenance and absence of legacy root
+        run: |
+          test "$(git rev-parse HEAD)" = "$EXPECTED_SHA"
+          test ! -e ../index.html
+          test -f ../LICENSE
+          test -f ../docs/RIGHTS_AND_ASSET_AUDIT.md
+          echo "PAGES_CUTOVER_SOURCE_PASS: $EXPECTED_SHA"
+      - name: Node 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+          cache-dependency-path: modern/package-lock.json
+      - name: Install reproducibly
+        run: npm ci --no-audit --no-fund
+      - name: Astro types, unit tests, original assets and durable documentation
+        run: |
+          npm run check
+          npm test
+          node ../scripts/check-license-boundary.mjs
+          node ../scripts/check-doc-status.mjs
+      - name: Build the actual GitHub Pages project path
+        run: |
+          npm run build
+          npm run check:artifact
+          test -f dist/index.html
+          test -f dist/favicon.svg
+          node --input-type=module <<'NODE'
+          import { readFileSync } from 'node:fs';
+          const html=readFileSync('dist/index.html','utf8');
+          if (!html.includes('/opalubka/favicon.svg')) throw Error('Incorrect favicon base path');
+          if (!html.includes('/opalubka/_astro/')) throw Error('Incorrect JS/CSS base path');
+          console.log('RELEASE_ASSET_BASE_PASS');
+          NODE
+      - name: Chromium browser QA on compiled /opalubka/ site
+        run: |
+          npx playwright install --with-deps chromium
+          root="$RUNNER_TEMP/pages-check"
+          mkdir -p "$root/opalubka"
+          cp -a dist/. "$root/opalubka/"
+          python3 -m http.server 8766 --bind 127.0.0.1 --directory "$root" > /tmp/pages-check.log 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid" 2>/dev/null || true' EXIT
+          for attempt in $(seq 1 30); do
+            if curl -fs -o /dev/null http://127.0.0.1:8766/opalubka/; then break; fi
+            sleep 1
+          done
+          curl -fs -o /dev/null http://127.0.0.1:8766/opalubka/
+          npx playwright test --config playwright.subpath.config.mjs
+      - name: Include license and exact SHA release provenance
+        run: |
+          cp ../LICENSE dist/LICENSE.txt
+          cmp ../LICENSE dist/LICENSE.txt
+          printf 'SOURCE_SHA=%s\nBASE_URL=/opalubka/\nBUILD=ASTRO_COMPILED\n' "$SOURCE_SHA" > dist/RELEASE_PROVENANCE.txt
+          test -s dist/LICENSE.txt
+          echo "RELEASE_READY_FOR_PAGES_ARTIFACT_PASS"
+      - name: Configure GitHub Pages metadata
+        uses: actions/configure-pages@v5
+      - name: Upload COMPILED site only for Pages
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: modern/dist
+
+  deploy:
+    needs: build
+    if: ${{ github.ref == 'refs/heads/main' && inputs.release_confirmation == 'AUTHORIZE_ASTRO_PUBLISH' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy approved artifact (ONLY after manual workflow dispatch)
+        id: deployment
+        uses: actions/deploy-pages@v4

@@ -1,6 +1,6 @@
 # QA Evidence ledger — Opalubka / LAB
 
-**Scope:** Astro candidate under `modern/`, **not** the legacy `main/index.html`, public domain or commercial business. Current candidate SHA and final status must be taken from [Draft PR #5](https://github.com/ruslanudintsev-ai/opalubka/pull/5) and **latest runs**, not copied from earlier successful PR comments.
+**Scope:** QA evidence for the Astro code under `modern/`, not the **historical legacy** `main@28c1fe9.../index.html` or any operating rental business. To determine the current SHA, merge status and actual deployment, inspect GitHub history and an independently validated public URL. Earlier CI success by itself does not establish a live website.
 
 ## Historical actual results (30 October 2026)
 
@@ -35,10 +35,10 @@ The implementing agent visually inspected historical screenshots from the exact 
 
 **BLOCKED:**
 - Independent review of **current** PR #5 head, with source-backed GitHub review comment and decision. [Reviewer task template](./INDEPENDENT_REVIEW_HANDOFF.md).
-- Owner's explicit choice to use the Astro build instead of conflicting P1a Draft PR #4, and separate GO for merging/public hosting/cutover.
+- Owner chose Astro over alternative PR #4 (closed without merge). Source integration and live-host cutover are separate controlled events; do not assume either occurred.
 - If publishing: verify host/root path really serves **only compiled `dist`**, not the old root `index.html`; record rollback and live QA.
 
-**EVIDENCE_GAP (manual or separate environment):** VoiceOver/NVDA, real-device keyboard/zoom/screen-reader testing, field Core Web Vitals, deployed security headers and PII handling of the future hosting platform, complete historical secret/license audit, legal source license selection. Automated axe and Lighthouse cannot establish these on their own.
+**EVIDENCE_GAP (manual or separate environment):** VoiceOver/NVDA, real-device keyboard/zoom/screen-reader testing, field Core Web Vitals, live-host security headers and provider request logging. The owner chose MIT, with source-rights caveats documented in `../../docs/RIGHTS_AND_ASSET_AUDIT.md`. Automated axe/Lighthouse cannot establish these gaps on their own.
 
 **Non-goal:** no real leads, prices, payments, customers, false organization/ratings, paid API, secret-backed services, domain/DNS modifications or changes to the owner's GitHub profile.
 

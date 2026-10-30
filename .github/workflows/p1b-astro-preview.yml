@@ -7,6 +7,10 @@ on:
       - .github/workflows/p1b-astro-preview.yml
   workflow_dispatch:
 
+concurrency:
+  group: p1b-preview-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
 

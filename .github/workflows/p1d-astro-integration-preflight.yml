@@ -58,6 +58,8 @@ jobs:
         run: node ../scripts/check-license-boundary.mjs
       - name: Prevent stale after-merge documentation claims
         run: node ../scripts/check-doc-status.mjs
+      - name: Validate dormant owner-gated Pages release template
+        run: node ../scripts/check-pages-template.mjs
       - name: Build GitHub Pages project-path fixture (read-only)
         run: |
           npm run build

@@ -12,11 +12,11 @@
 | Standalone deployable static artifact | Plain `python3 -m http.server --directory dist` checks, source-SHA provenance, `dist` ZIP artifact (CI only) | Automated in CI, **never deployed** |
 | Performance and dependency reports | Local simulated Lighthouse mobile/desktop + `npm audit --omit=dev` production advisories | Automated; lab and point-in-time only |
 | Architecture, data/privacy and ownership docs | Russian root README, English/Russian modern overview, architecture, DEMO, privacy, QA evidence, safe deployment plan | Provided for review |
-| Independent code/security/UX review | Separate reviewer should read current exact SHA, artifacts and diff, then submit verdict on Draft PR #5 | **BLOCKED — no independent reviewer verdict received** |
+| Independent code/security/UX review | Second-pass ChatGPT technical recheck #6522995787 confirmed two fixes on PR #5 SHA 694f1e...; subsequent screenshot evidence was self-inspected at updated SHA | **PARTIAL — independent visual/manual a11y review still unverified; not formal GitHub approval** |
 | Manual VoiceOver/NVDA and real phone verification | Real assistive technology and touch device (if available); record exact device/version and evidence | **EVIDENCE_GAP** |
-| Choose Astro vs P1a HTML branch | Owner explicitly selects target; PR #4 and PR #5 are competing implementations | **OWNER DECISION REQUIRED** |
+| Choose Astro vs P1a HTML branch | Owner selected Astro PR #5; alternative PR #4 closed unmerged | **OWNER CHOICE RECORDED, integration/merge remains separate** |
 | Root integration and publication | Must serve **compiled `modern/dist`** as web root, not old `index.html` or Astro source | **NOT EXECUTED — owner GO required** |
-| Legal license choice | Owner decides license and scope of reuse for source and original SVG artwork | **OWNER DECISION REQUIRED** |
+| Legal license choice | Owner approved MIT with 2026 Ruslan Udintsev notice; root LICENSE and rights/asset audit are in stacked Draft PR #6 | **APPROVED IN DRAFT — not merged into main** |
 | Public portfolio/profile update | Only after accepted public result and separate owner permission | **NOT EXECUTED** |
 
 ## Artifact/release policy

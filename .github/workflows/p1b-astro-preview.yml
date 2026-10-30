@@ -71,6 +71,28 @@ jobs:
           fi
           npm run test:e2e
 
+      - name: Stamp reproducible static release candidate
+        run: |
+          test -s dist/index.html
+          test -s dist/favicon.svg
+          {
+            echo "OPALUBKA_STATIC_DEMO_RELEASE_CANDIDATE"
+            echo "SOURCE_SHA=$SOURCE_SHA"
+            echo "SITE_ROOT=dist/"
+            echo "TYPE=fictional-portolio-demo"
+            echo "NOT_PUBLISHED=YES"
+            echo "NO_REAL_ORDERS=YES"
+            echo "PUBLISH_ONLY_AFTER_OWNER_GO=YES"
+          } > dist/RELEASE_PROVENANCE.txt
+          test -s dist/RELEASE_PROVENANCE.txt
+      - name: Upload deployable static bundle (artifact only, NEVER deploy)
+        uses: actions/upload-artifact@v6
+        with:
+          name: opalubka-static-candidate-${{ env.SOURCE_SHA }}
+          path: modern/dist/
+          if-no-files-found: error
+          retention-days: 14
+
       - name: Save actual screenshot, trace and HTML QA evidence
         if: always()
         uses: actions/upload-artifact@v6

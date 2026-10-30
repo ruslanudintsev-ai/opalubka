@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" role="img" aria-label="Опалубка LAB — схематичный щит">
+  <rect width="64" height="64" rx="12" fill="#09121b"/>
+  <path d="M13 16h38v32H13z M13 26h38 M25 16v32 M39 16v32" stroke="#f5a623" stroke-width="3.5" stroke-linejoin="round" fill="none"/>
+  <circle cx="51" cy="49" r="4" fill="#8fd6d8"/>
+</svg>

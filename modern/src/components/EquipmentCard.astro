@@ -1,0 +1,30 @@
+---
+import type { Equipment } from '../data/catalog.ts';
+import { illustrationPaths } from '../data/illustrations.ts';
+interface Props { item: Equipment; index: number }
+const { item, index } = Astro.props;
+---
+<article class="equipment-card" data-equipment-category={item.category}>
+  <div class="equipment-visual" aria-hidden="true">
+    <div class="tech-grid"></div>
+    <svg viewBox="0 0 300 185" class="tech-drawing" fill="none" aria-hidden="true" data-illustration={item.id}>
+      {illustrationPaths[item.id].map((d, layer) => (
+        <path d={d} stroke="currentColor" stroke-width={layer === 0 ? 3 : 2}
+              stroke-linecap="round" stroke-linejoin="round" opacity={layer === 0 ? 1 : 0.72} />
+      ))}
+    </svg>
+    <span class="visual-counter">0{index + 1} / 05</span>
+    <span class="visual-label">SCHEMATIC / DEMO</span>
+  </div>
+  <div class="equipment-body">
+    <div class="equipment-kicker"><span class="tiny-dot"></span> {item.badge} · условный пример</div>
+    <h3>{item.name}</h3>
+    <p>{item.subtitle}. Параметры не являются техническими характеристиками производителя.</p>
+    <div class="equipment-bottom">
+      <div class="equipment-rate"><strong>{item.dailyRateRubPerM2} ₽</strong><span>/ м² / сутки · демо</span></div>
+      <button class="select-button" type="button" data-select-equipment={item.id} aria-label={`Выбрать ${item.name} для демо-расчёта`}>
+        Выбрать <span aria-hidden="true">↗</span>
+      </button>
+    </div>
+  </div>
+</article>

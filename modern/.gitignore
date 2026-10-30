@@ -1,0 +1,8 @@
+node_modules/
+dist/
+.astro/
+*.tsbuildinfo
+quality-reports/
+playwright-report/
+test-results/
+coverage/

@@ -1,0 +1,210 @@
+name: P1b Astro preview quality
+
+on:
+  pull_request:
+    paths:
+      - modern/**
+      - .github/workflows/p1b-astro-preview.yml
+  workflow_dispatch:
+
+concurrency:
+  group: p1b-preview-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    defaults:
+      run:
+        working-directory: modern
+    steps:
+      - name: Checkout exact source commit
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ env.SOURCE_SHA }}
+      - name: Assert candidate checkout provenance
+        run: |
+          echo "Candidate source SHA: $SOURCE_SHA"
+          test "$(git rev-parse HEAD)" = "$SOURCE_SHA"
+      - name: Node.js 24
+        uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+          package-manager-cache: false
+      - name: Install reproducibly
+        run: npm ci --no-audit --no-fund
+      - name: Typecheck Astro and TypeScript
+        run: npm run check
+      - name: Unit test domain
+        run: npm test
+      - name: Build static output
+        run: npm run build
+      - name: Audit built assets, fragments and honest demo content
+        run: npm run check:artifact
+      - name: Install browser engines and OS libraries
+        run: npx playwright install --with-deps chromium firefox webkit
+      - name: Real browser, viewport, download and axe tests
+        run: |
+          npm run preview -- --port 4321 > /tmp/opalubka-preview.log 2>&1 &
+          preview_pid=$!
+          trap 'kill "$preview_pid" 2>/dev/null || true' EXIT
+          ready=0
+          for attempt in $(seq 1 30); do
+            if curl -fs -o /dev/null http://127.0.0.1:4321/; then
+              ready=1
+              echo "PREVIEW_HTTP_READY on attempt $attempt"
+              break
+            fi
+            sleep 2
+          done
+          if [ "$ready" -ne 1 ]; then
+            echo "Preview failed to start:"
+            cat /tmp/opalubka-preview.log
+            exit 1
+          fi
+          npm run test:e2e
+
+      - name: Confirm dist works under plain static HTTP hosting
+        run: |
+          python3 -m http.server 8765 --bind 127.0.0.1 --directory dist > /tmp/opalubka-static-http.log 2>&1 &
+          static_pid=$!
+          trap 'kill "$static_pid" 2>/dev/null || true' EXIT
+          ready=0
+          for attempt in $(seq 1 15); do
+            if curl -fs -o /dev/null http://127.0.0.1:8765/; then
+              ready=1
+              break
+            fi
+            sleep 1
+          done
+          if [ "$ready" -ne 1 ]; then
+            cat /tmp/opalubka-static-http.log
+            exit 1
+          fi
+          curl -fsS http://127.0.0.1:8765/ -o /tmp/opalubka-static-index.html
+          cmp dist/index.html /tmp/opalubka-static-index.html
+          curl -fsS http://127.0.0.1:8765/favicon.svg -o /tmp/opalubka-static-favicon.svg
+          cmp dist/favicon.svg /tmp/opalubka-static-favicon.svg
+          echo "PLAIN_STATIC_HTTP_PASS: exact built index and original local favicon"
+      - name: Stamp reproducible static release candidate
+        run: |
+          test -s dist/index.html
+          test -s dist/favicon.svg
+          {
+            echo "OPALUBKA_STATIC_DEMO_RELEASE_CANDIDATE"
+            echo "SOURCE_SHA=$SOURCE_SHA"
+            echo "SITE_ROOT=dist/"
+            echo "TYPE=fictional-portfolio-demo"
+            echo "NOT_PUBLISHED=YES"
+            echo "NO_REAL_ORDERS=YES"
+            echo "PUBLISH_ONLY_AFTER_OWNER_GO=YES"
+          } > dist/RELEASE_PROVENANCE.txt
+          test -s dist/RELEASE_PROVENANCE.txt
+      - name: Upload deployable static bundle (artifact only, NEVER deploy)
+        uses: actions/upload-artifact@v6
+        with:
+          name: opalubka-static-candidate-${{ env.SOURCE_SHA }}
+          path: modern/dist/
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Integration test a real nested static site under /opalubka/
+        env:
+          DEMO_BASE_PATH: /opalubka/
+        run: |
+          npm run build
+          npm run check:artifact
+          root="$RUNNER_TEMP/opalubka-subpath-fixture"
+          mkdir -p "$root/opalubka"
+          cp -a dist/. "$root/opalubka/"
+          python3 -m http.server 8766 --bind 127.0.0.1 --directory "$root" > /tmp/opalubka-subpath-http.log 2>&1 &
+          static_pid=$!
+          trap 'kill "$static_pid" 2>/dev/null || true' EXIT
+          ready=0
+          for attempt in $(seq 1 20); do
+            if curl -fs -o /dev/null http://127.0.0.1:8766/opalubka/; then
+              ready=1
+              break
+            fi
+            sleep 1
+          done
+          if [ "$ready" -ne 1 ]; then
+            cat /tmp/opalubka-subpath-http.log
+            exit 1
+          fi
+          npx playwright test --config playwright.subpath.config.mjs
+          echo "NESTED_STATIC_HOSTING_PASS: /opalubka/ with exact CSS/JS/favicon and calculator"
+
+      - name: Assert five real Chromium screenshots survive nested QA
+        run: |
+          test -d test-results/screenshots
+          image_count=$(find test-results/screenshots -maxdepth 1 -type f -name "*-chromium-*.png" | wc -l)
+          test "$image_count" -eq 5
+          for width in 320 360 390 768 1440; do
+            test -s "test-results/screenshots/${SOURCE_SHA:0:12}-chromium-$width.png"
+          done
+          echo "CHROMIUM_VISUAL_EVIDENCE_PASS: exactly 5 actual full-page screenshots on $SOURCE_SHA"
+      - name: Save nested-path browser evidence
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: nested-static-qa-${{ env.SOURCE_SHA }}
+          path: |
+            modern/playwright-subpath-report/
+            modern/test-results/
+          if-no-files-found: warn
+          retention-days: 14
+
+      - name: Save actual screenshot, trace and HTML QA evidence
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: p1c-browser-evidence-${{ env.SOURCE_SHA }}
+          path: |
+            modern/test-results/
+            modern/playwright-report/
+          if-no-files-found: warn
+          retention-days: 14
+
+  windows-path-regression:
+    runs-on: windows-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: modern
+    steps:
+      - name: Checkout exact PR head on Windows
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ env.SOURCE_SHA }}
+      - name: Assert exact Windows SHA
+        shell: pwsh
+        run: |
+          if ((git rev-parse HEAD) -ne "$env:SOURCE_SHA") { throw "Windows SHA mismatch" }
+          Write-Output "WINDOWS_SOURCE_SHA=$env:SOURCE_SHA"
+      - name: Set up Node 24 on Windows
+        uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+          package-manager-cache: false
+      - name: Install locked dependencies
+        run: npm ci --no-audit --no-fund
+      - name: Windows path regression tests
+        run: npm test
+      - name: Windows root static build and guard
+        run: |
+          npm run build
+          npm run check:artifact
+      - name: Windows nested-path build and guard
+        env:
+          DEMO_BASE_PATH: /opalubka/
+        run: |
+          npm run build
+          npm run check:artifact
